@@ -1,6 +1,17 @@
 {
   "compilerOptions": {
-    "lib": ["ES5", "ES6", "ES7", "ES2017", "ES2018", "ES2019", "ES2020", "ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES5",
+      "ES6",
+      "ES7",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020",
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "skipLibCheck": true,
     "strict": true,
     "alwaysStrict": true,
@@ -22,9 +33,19 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "allowJs": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

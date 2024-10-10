@@ -1,0 +1,4 @@
+{
+quote = single,
+"prettier.singleQuote": true
+}

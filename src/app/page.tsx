@@ -1,8 +1,3 @@
-
 export default function Home() {
-  return (
-    <div>
-      Hotel Management
-    </div>
-  );
+  return <div className='text-4xl font-bold'>Hotel Management</div>;
 }

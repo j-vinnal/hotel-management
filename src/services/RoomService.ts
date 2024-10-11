@@ -1,6 +1,7 @@
 import { IRoom } from '@/interfaces/domain/IRoom';
 import { IJWTResponse } from '@/interfaces/IJWTResponse';
 import { BaseEntityService } from './base/BaseEntityService';
+import { IResultObject } from '@/interfaces/auth/IResultObject';
 
 export default class RoomService extends BaseEntityService<IRoom> {
   //takes setJwtResponse method as parameter

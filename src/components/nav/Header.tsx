@@ -53,11 +53,7 @@ export default function Header() {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-
-
           <div className="navbar-collapse collapse d-sm-inline-flex justify-content-center">
-
-
             <ul
               className={`navbar-nav flex-grow-1 search-container ${isSearchVisible ? 'visible' : 'hidden'}`}>
               <div
@@ -67,13 +63,9 @@ export default function Header() {
               </div>
             </ul>
 
-            
             <Identity />
           </div>
         </div>
-
-
-
       </nav>
     </header>
   );

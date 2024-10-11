@@ -2,8 +2,8 @@ import {IJWTResponse} from '@/interfaces/IJWTResponse';
 import {IResultObject} from '@/interfaces/auth/IResultObject';
 import {IBaseEntity} from '@/interfaces/domain/IBaseEntity';
 import {AxiosError} from 'axios';
-import {IdentityService} from '../IdentityService';
 import {BaseService} from './BaseService';
+import IdentityService from '../IdentityService';
 
 export abstract class BaseEntityService<TEntity extends IBaseEntity> extends BaseService {
   protected constructor(
@@ -49,6 +49,19 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
         }
         return retryResult;
       }
+      return this.handleError(e);
+    }
+  }
+
+
+  async getRequestPublic(): Promise<IResultObject<TEntity>> {
+    try {
+      const response = await this.axios.get<TEntity>('');
+      if (response.status < 300) {
+        return {data: response.data};
+      }
+      return {errors: [`${response.status} ${response.statusText}`]};
+    } catch (e: any) {
       return this.handleError(e);
     }
   }

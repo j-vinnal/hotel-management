@@ -1,12 +1,17 @@
-import {IRoom} from '@/interfaces/domain/IRoom';
-import {IJWTResponse} from '@/interfaces/IJWTResponse';
-import {BaseEntityService} from './base/BaseEntityService';
+import { IRoom } from '@/interfaces/domain/IRoom';
+import { IJWTResponse } from '@/interfaces/IJWTResponse';
+import { BaseEntityService } from './base/BaseEntityService';
 
-export class RoomService extends BaseEntityService<IRoom> {
+export default class RoomService extends BaseEntityService<IRoom> {
   //takes setJwtResponse method as parameter
-  constructor(setJwtResponse: ((data: IJWTResponse | undefined) => void) | null) {
+  constructor(
+    setJwtResponse: ((data: IJWTResponse | undefined) => void) | null
+  ) {
     //sets base url
-    super('v1/rooms', setJwtResponse as (data: IJWTResponse | undefined) => void);
+    super(
+      'v1/rooms',
+      setJwtResponse as (data: IJWTResponse | undefined) => void
+    );
   }
 
   // Additional methods

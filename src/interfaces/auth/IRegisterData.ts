@@ -4,6 +4,7 @@ export interface IRegisterData {
   firstName: string;
   lastName: string;
   email: string;
+  personalCode: string;
   password: string;
   confirmedPassword: string;
 }
@@ -13,6 +14,7 @@ export const RegisterSchema = z
     firstName: z.string().trim().min(1, {message: 'First name is required'}),
     lastName: z.string().trim().min(1, {message: 'Last name is required'}),
     email: z.string().trim().email({message: 'Invalid email address'}),
+    personalCode: z.string().trim().min(1, {message: 'Personal code is required'}),
     password: z
       .string()
       .trim()

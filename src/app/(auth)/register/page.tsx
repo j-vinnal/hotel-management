@@ -4,6 +4,7 @@ import FormInput from '@/components/FormInput';
 import useAccountActions from '@/hooks/identity/useAccountActions';
 import { IRegisterData, RegisterSchema } from '@/interfaces/auth/IRegisterData';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -97,6 +98,17 @@ const RegisterPage = () => {
             Register
           </button>
         </form>
+
+        <div className="py-4 text-center">
+          <p className="be-1">
+            {"Already have an account?"}
+            <Link
+              href="/login"
+              className="text-primary text-decoration-none ms-1">
+              Log in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

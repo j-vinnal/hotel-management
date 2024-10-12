@@ -17,6 +17,7 @@ const useEntityActions = <T extends IBaseEntity>(
 
   const addEntity = async (entity: T) => {
     setLoading(true);
+    setError(null);
     const service = new ServiceClass(setJwtResponse);
     try {
       checkJwtAndHandleError(jwtResponse);
@@ -33,6 +34,7 @@ const useEntityActions = <T extends IBaseEntity>(
 
   const editEntity = async (id: string, entity: T) => {
     setLoading(true);
+    setError(null);
     const service = new ServiceClass(setJwtResponse);
     try {
       checkJwtAndHandleError(jwtResponse);
@@ -49,6 +51,7 @@ const useEntityActions = <T extends IBaseEntity>(
 
   const deleteEntity = async (id: string) => {
     setLoading(true);
+    setError(null);
     const service = new ServiceClass(setJwtResponse);
     try {
       checkJwtAndHandleError(jwtResponse);
@@ -65,6 +68,7 @@ const useEntityActions = <T extends IBaseEntity>(
 
   const fetchEntity = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const service = new ServiceClass(setJwtResponse);
     try {
       let response;

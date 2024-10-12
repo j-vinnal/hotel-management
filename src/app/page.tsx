@@ -8,7 +8,7 @@ import { FaBed, FaStar } from 'react-icons/fa';
 
 const HotelBookingPage = () => {
   const { rooms, loading, error, fetchRooms } = useContext(RoomContext)!;
-  const { checkinDate, checkoutDate, guests } = useContext(SearchContext)!;
+  const { startDate, endDate, guestCount } = useContext(SearchContext)!;
 
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const messages = [
@@ -54,8 +54,9 @@ const HotelBookingPage = () => {
   }, [rooms]);
 
   useEffect(() => {
-    fetchRooms({ guests, startDate: checkinDate, endDate: checkoutDate });
-  }, [fetchRooms]);
+    if (error) return;
+    fetchRooms({ guestCount, startDate, endDate });
+  }, [fetchRooms, error]);
 
   return (
     <div className="font-montserrat min-vh-100">
@@ -79,55 +80,53 @@ const HotelBookingPage = () => {
               </h3>
             </div>
 
-            <div
-              className="d-flex justify-content-center mx-auto"
-              style={{ width: 'fit-content' }}>
-              <SearchBar />
-            </div>
+            <SearchBar />
           </div>
         </section>
 
         <div className="container py-5 mt-4">
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {loading && <p>Loading rooms...</p>}
-            {error && <p>Error: {error}</p>}
-            {rooms.map((room) => (
-              <div key={room.id} className="col">
-                <div
-                  className="card h-100 shadow-sm"
-                  style={{
-                    height: '400px',
-                    transition: 'transform 0.3s ease',
-                  }}>
-                  <img
-                    src={room.imageUrl}
-                    className="card-img-top"
-                    alt={room.roomName}
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">{room.roomName}</h5>
-                    <p className="card-text">
-                      <FaBed className="text-secondary me-2" />
-                      {room.bedCount} bed{room.bedCount > 1 ? 's' : ''}
-                    </p>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <span className="h4">
-                        ${room.price}
-                        <small className="text-muted"> /night</small>
-                      </span>
-                      <div className="d-flex align-items-center">
-                        <FaStar className="text-warning me-1" />
-                        <span>{ratings[room.id!]}</span>
+          {error && <p className="text-danger">Error: {error}</p>}
+          {!error && (
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+              {loading && <p>Loading rooms...</p>}
+              {rooms.map((room) => (
+                <div key={room.id} className="col">
+                  <div
+                    className="card h-100 shadow-sm"
+                    style={{
+                      height: '400px',
+                      transition: 'transform 0.3s ease',
+                    }}>
+                    <img
+                      src={room.imageUrl}
+                      className="card-img-top"
+                      alt={room.roomName}
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">{room.roomName}</h5>
+                      <p className="card-text">
+                        <FaBed className="text-secondary me-2" />
+                        {room.bedCount} bed{room.bedCount > 1 ? 's' : ''}
+                      </p>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <span className="h4">
+                          ${room.price}
+                          <small className="text-muted"> /night</small>
+                        </span>
+                        <div className="d-flex align-items-center">
+                          <FaStar className="text-warning me-1" />
+                          <span>{ratings[room.id!]}</span>
+                        </div>
                       </div>
+                      <button className="btn btn-primary mt-3 w-100">
+                        Book Now
+                      </button>
                     </div>
-                    <button className="btn btn-primary mt-3 w-100">
-                      Book Now
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </div>

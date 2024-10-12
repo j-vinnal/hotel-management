@@ -4,12 +4,12 @@ import { format } from 'date-fns';
 import { createContext, useState } from 'react';
 
 interface SearchContextType {
-  guests: number;
-  setGuests: (guests: number) => void;
-  checkinDate: Date | undefined;
-  setCheckinDate: (date: Date | undefined) => void;
-  checkoutDate: Date | undefined;
-  setCheckoutDate: (date: Date | undefined) => void;
+  guestCount: number;
+  setGuestCount: (guests: number) => void;
+  startDate: Date | undefined;
+  setStartDate: (date: Date | undefined) => void;
+  endDate: Date | undefined;
+  setEndDate: (date: Date | undefined) => void;
 }
 
 export const formatDate = (
@@ -28,19 +28,19 @@ export default function SearchProvider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [guests, setGuests] = useState<number>(1);
-  const [checkinDate, setCheckinDate] = useState<Date | undefined>(undefined);
-  const [checkoutDate, setCheckoutDate] = useState<Date | undefined>(undefined);
+  const [guestCount, setGuestCount] = useState<number>(1);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
   return (
     <SearchContext.Provider
       value={{
-        guests,
-        setGuests,
-        checkinDate,
-        setCheckinDate,
-        checkoutDate,
-        setCheckoutDate,
+        guestCount, 
+        setGuestCount,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate,
       }}>
       {children}
     </SearchContext.Provider>

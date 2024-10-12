@@ -29,6 +29,7 @@ export default function RoomProvider({
   const fetchRooms = useCallback(
     async (availabilityRequest?: IRoomAvailabilityRequest) => {
       setLoading(true);
+      setError(null);
       const service = new RoomService(null);
       try {
         const response = await service.getAvailableRooms(
@@ -38,7 +39,6 @@ export default function RoomProvider({
         setRooms(response.data || []);
       } catch (error) {
         setError((error as Error).message);
-        throw new Error((error as Error).message);
       } finally {
         setLoading(false);
       }

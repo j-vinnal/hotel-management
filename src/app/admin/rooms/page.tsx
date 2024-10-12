@@ -1,0 +1,61 @@
+'use client';
+
+import AdminLayout from '@/components/layouts/AdminLayouts';
+import useEntityActions from '@/hooks/base/useEntityActions';
+import { IRoom } from '@/interfaces/domain/IRoom';
+import RoomService from '@/services/RoomService';
+import { useEffect } from 'react';
+
+const AdminPage = () => {
+  const { entities: rooms, refetch: fetchEntity } =
+    useEntityActions<IRoom>(RoomService);
+
+  useEffect(() => {
+    fetchEntity();
+  }, []);
+
+  return (
+    <AdminLayout>
+      <h2>Manage rooms</h2>
+      <div className="pt-4">
+        <p>
+          <a href="/Rooms/Create">Create New</a>
+        </p>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Room number</th>
+              <th>Room name</th>
+              <th>Bed count</th>
+              <th>Price</th>
+              <th>Image URL</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {rooms.map((room) => (
+              <tr key={room.id}>
+                <td>{room.roomNumber}</td>
+                <td>{room.roomName}</td>
+                <td>{room.bedCount}</td>
+                <td>{room.price}</td>
+                <td>
+                  {(room.imageUrl?.length ?? 0) > 30 ? `${room.imageUrl!.substring(0, 30)}...` : room.imageUrl ?? 'No Image'}
+                </td>
+                <td>
+                  <a href={`/Rooms/Edit/${room.id}`}>Edit</a>{' '}
+                  |
+                  <a href={`/Rooms/Details/${room.id}`}>Details</a>{' '}
+                  |
+                  <a href={`/Rooms/Delete/${room.id}`}>Delete</a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </AdminLayout>
+  );
+};
+
+export default AdminPage;

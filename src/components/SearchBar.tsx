@@ -5,7 +5,8 @@ import {
   RoomAvailabilityRequestSchema,
 } from '@/interfaces/RoomAvailabilityRequest';
 import { RoomContext } from '@/states/contexts/RoomContext';
-import { formatDate, SearchContext } from '@/states/contexts/SearchContext';
+import { SearchContext } from '@/states/contexts/SearchContext';
+import { formatDate } from '@/utils/formatDate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname, useRouter } from 'next/navigation';
 import { useContext, useEffect } from 'react';
@@ -57,7 +58,6 @@ const SearchBar = () => {
 
     try {
       await fetchRooms(data);
-
       // Redirect to main page if not already there
       if (pathname !== '/') {
         router.push('/');
@@ -70,6 +70,10 @@ const SearchBar = () => {
 
   // Fetch all rooms without filters
   const handleClearSearch = async () => {
+    // Redirect to main page if not already there
+    if (pathname !== '/') {
+      router.push('/');
+    }
     setGuestCount(1);
     setStartDate(undefined);
     setEndDate(undefined);
@@ -78,7 +82,7 @@ const SearchBar = () => {
       startDate: undefined,
       endDate: undefined,
     });
-    await fetchRooms(); 
+    await fetchRooms();
   };
 
   const commonStyle = {

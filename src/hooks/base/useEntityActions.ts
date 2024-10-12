@@ -88,12 +88,6 @@ const useEntityActions = <T extends IBaseEntity>(
     }
   }, [setLoading, setJwtResponse, ServiceClass, jwtResponse]);
 
-  useEffect(() => {
-    if (!requireJwt ||jwtResponse) {
-      fetchEntity();
-    }
-  }, [jwtResponse, setJwtResponse, fetchEntity]);
-
   return {
     addEntity,
     editEntity,

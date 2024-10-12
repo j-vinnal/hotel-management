@@ -5,7 +5,6 @@ import { jwtDecode } from 'jwt-decode';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { JWTContext } from './JWTContext';
 
-
 export interface IUserContext {
   user: IAppUserState | undefined;
   setUser: (user: IAppUserState | undefined) => void;
@@ -42,7 +41,11 @@ export default function UserProvider({
               'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
             ],
           personalCode: decodedJwt['PersonalCode'],
+          role: decodedJwt[
+            'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+          ],
         });
+
       } catch (error) {
         console.error('Failed to decode JWT:', error);
         setUser(undefined);

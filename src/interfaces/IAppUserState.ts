@@ -5,4 +5,5 @@ export interface IAppUserState extends IBaseEntity {
   firstName: string;
   lastName: string;
   personalCode: string;
+  role: string;
 }

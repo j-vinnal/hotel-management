@@ -80,7 +80,11 @@ const HotelBookingPage = () => {
               </h3>
             </div>
 
-            <SearchBar />
+            <div
+              className="d-flex justify-content-center mx-auto"
+              style={{  width: 'fit-content' }}>
+              <SearchBar />
+            </div>
           </div>
         </section>
 

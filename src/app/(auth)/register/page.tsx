@@ -101,7 +101,7 @@ const RegisterPage = () => {
 
         <div className="py-4 text-center">
           <p className="be-1">
-            {"Already have an account?"}
+            {'Already have an account?'}
             <Link
               href="/login"
               className="text-primary text-decoration-none ms-1">

@@ -1,6 +1,5 @@
 'use client';
 
-import { format } from 'date-fns'; 
 import { createContext, useState } from 'react';
 
 interface SearchContextType {
@@ -11,13 +10,6 @@ interface SearchContextType {
   endDate: Date | undefined;
   setEndDate: (date: Date | undefined) => void;
 }
-
-export const formatDate = (
-  date: Date | undefined,
-  dateFormat: string = 'dd-MM-yyyy'
-): string => {
-  return date ? format(date, dateFormat) : '';
-};
 
 export const SearchContext = createContext<SearchContextType | undefined>(
   undefined
@@ -35,7 +27,7 @@ export default function SearchProvider({
   return (
     <SearchContext.Provider
       value={{
-        guestCount, 
+        guestCount,
         setGuestCount,
         startDate,
         setStartDate,

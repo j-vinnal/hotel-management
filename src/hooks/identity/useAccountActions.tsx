@@ -4,6 +4,7 @@ import { ILoginData } from '@/interfaces/auth/ILoginData';
 import { IRegisterData } from '@/interfaces/auth/IRegisterData';
 import IdentityService from '@/services/IdentityService';
 import { JWTContext } from '@/states/contexts/JWTContext';
+import { UserContext } from '@/states/contexts/UserContext';
 
 import { handleResponseErrors } from '@/utils/handleResponseErrors';
 import { useRouter } from 'next/navigation';
@@ -11,6 +12,7 @@ import { useContext } from 'react';
 
 const useAccountActions = () => {
   const { jwtResponse, setJwtResponse } = useContext(JWTContext)!;
+  const { setUser } = useContext(UserContext)!;
   const router = useRouter();
 
   const loginAccount = async (account: ILoginData) => {
@@ -30,6 +32,7 @@ const useAccountActions = () => {
     try {
       await identityService.logout(jwtResponse!, router);
       setJwtResponse(undefined);
+      setUser(undefined);
       router.push('/');
     } catch (error) {
       throw new Error((error as Error).message);

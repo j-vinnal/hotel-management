@@ -111,11 +111,6 @@ button.accept-policy {
   }
 }
 
-@media (max-width: 575px) {
-  .search-container {
-    display: none;
-  }
-}
 
 .full-width {
   object-fit: cover;
@@ -142,4 +137,21 @@ button.accept-policy {
 
 .card:hover {
   transform: scale(1.03); 
+}
+
+
+@media (max-width: 991px) {
+  .search-bar-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar-form > div {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .search-bar-form button {
+    width: 100%;
+  }
 }

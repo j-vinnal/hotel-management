@@ -10,9 +10,9 @@ export default function Header() {
   const pathname = usePathname();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
+
   useEffect(() => {
     const isHomePage = pathname === '/';
-
     if (!isHomePage) {
       setIsSearchVisible(true);
       return;

@@ -7,11 +7,12 @@ import {
 import { RoomContext } from '@/states/contexts/RoomContext';
 import { formatDate, SearchContext } from '@/states/contexts/SearchContext';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { usePathname, useRouter } from 'next/navigation';
 
 const SearchBar = () => {
   const {
@@ -24,6 +25,8 @@ const SearchBar = () => {
   } = useContext(SearchContext)!;
 
   const { fetchRooms } = useContext(RoomContext)!;
+  const router = useRouter();
+  const pathname = usePathname(); 
 
   const {
     register,
@@ -31,6 +34,7 @@ const SearchBar = () => {
     formState: { errors, isSubmitting },
     setError,
     control,
+    reset,
   } = useForm<IRoomAvailabilityRequest>({
     defaultValues: {
       guests: guests,
@@ -40,9 +44,24 @@ const SearchBar = () => {
     resolver: zodResolver(RoomAvailabilityRequestSchema),
   });
 
+  useEffect(() => {
+    reset({
+      guests: guests,
+      startDate: checkinDate,
+      endDate: checkoutDate,
+    });
+  }, [guests, checkinDate, checkoutDate, reset]);
+
   const handleSubmitSearch = async (data: IRoomAvailabilityRequest) => {
+    console.log('search data', data);
+
     try {
-      fetchRooms(data);
+      await fetchRooms(data);
+
+      // Redirect to main page if not already there
+      if (pathname !== '/') {
+        router.push('/');
+      }
     } catch (error) {
       toast.error((error as Error).message);
       setError('root', { type: 'server', message: (error as Error).message });

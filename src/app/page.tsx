@@ -2,11 +2,13 @@
 
 import SearchBar from '@/components/SearchBar';
 import { RoomContext } from '@/states/contexts/RoomContext';
+import { SearchContext } from '@/states/contexts/SearchContext';
 import { useContext, useEffect, useState } from 'react';
 import { FaBed, FaStar } from 'react-icons/fa';
 
 const HotelBookingPage = () => {
   const { rooms, loading, error, fetchRooms } = useContext(RoomContext)!;
+  const { checkinDate, checkoutDate, guests } = useContext(SearchContext)!;
 
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const messages = [
@@ -52,7 +54,7 @@ const HotelBookingPage = () => {
   }, [rooms]);
 
   useEffect(() => {
-    fetchRooms();
+    fetchRooms({ guests, startDate: checkinDate, endDate: checkoutDate });
   }, [fetchRooms]);
 
   return (
@@ -78,8 +80,8 @@ const HotelBookingPage = () => {
             </div>
 
             <div
-              className="d-flex justify-content-center mx-auto z-n1 "
-              style={{ height: '70px', width: 'fit-content' }}>
+              className="d-flex justify-content-center mx-auto"
+              style={{ width: 'fit-content' }}>
               <SearchBar />
             </div>
           </div>

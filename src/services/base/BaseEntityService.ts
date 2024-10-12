@@ -53,15 +53,26 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-
-  async getRequestPublic(): Promise<IResultObject<TEntity>> {
+  async getRequestById(id: string, jwtData: IJWTResponse, retry: boolean = true): Promise<IResultObject<TEntity>> {
     try {
-      const response = await this.axios.get<TEntity>('');
+      const response = await this.axios.get<TEntity>(`${id}`, {
+        headers: {
+          Authorization: 'Bearer ' + jwtData.jwt,
+        },
+      });
       if (response.status < 300) {
-        return {data: response.data};
+        return { data: response.data };
       }
-      return {errors: [`${response.status} ${response.statusText}`]};
+      return { errors: [`${response.status} ${response.statusText}`] };
     } catch (e: any) {
+      if (e.response?.status === 401 && retry) {
+        const retryResult = await this.handle401Error(e, jwtData);
+        if (retryResult === null) {
+          // Retry the request once with the new JWT
+          return this.getRequestById(id, jwtData, false);
+        }
+        return retryResult;
+      }
       return this.handleError(e);
     }
   }

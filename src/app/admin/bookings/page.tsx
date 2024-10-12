@@ -5,12 +5,14 @@ import useEntityActions from '@/hooks/base/useEntityActions';
 import { IBooking } from '@/interfaces/domain/IBooking';
 import BookingService from '@/services/BookingService';
 import { formatDate } from '@/utils/formatDate';
-import { useEffect } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const AdminPage = () => {
   const { entities: bookings, refetch: fetchEntity } = useEntityActions<IBooking>(
     BookingService
   );
+ 
 
   useEffect(() => {
     fetchEntity();
@@ -48,23 +50,16 @@ const AdminPage = () => {
                   <input
                     className="check-box"
                     disabled
-                    checked
+                    checked={booking.isCancelled}
                     type="checkbox"
                   />
                 </td>
-
                 <td>
-                  <a href="/Bookings/Edit/bb28d136-5388-4079-bde3-ff55bae623d5">
-                    Edit
-                  </a>{' '}
+                  <Link href={`/admin/bookings/edit/${booking.id}`}>Edit</Link>
                   |
-                  <a href="/Bookings/Details/bb28d136-5388-4079-bde3-ff55bae623d5">
-                    Details
-                  </a>{' '}
+                  <Link href={`/admin/bookings/edit/${booking.id}`}>Details</Link>
                   |
-                  <a href="/Bookings/Delete/bb28d136-5388-4079-bde3-ff55bae623d5">
-                    Delete
-                  </a>
+                  <Link href={`/admin/bookings/edit/${booking.id}`}>Delete</Link>
                 </td>
               </tr>
             ))}

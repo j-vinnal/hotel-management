@@ -108,10 +108,14 @@ const HotelBookingPage = () => {
                     />
                     <div className="card-body">
                       <h5 className="card-title">{room.roomName}</h5>
+                      <p className="card-text mb-4" style={{ fontSize: '0.9em' }}>
+                        Room {room.roomNumber}
+                      </p>
                       <p className="card-text">
                         <FaBed className="text-secondary me-2" />
                         {room.bedCount} bed{room.bedCount > 1 ? 's' : ''}
                       </p>
+                    
                       <div className="d-flex justify-content-between align-items-center">
                         <span className="h4">
                           ${room.price}

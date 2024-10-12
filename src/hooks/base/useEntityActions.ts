@@ -88,6 +88,23 @@ const useEntityActions = <T extends IBaseEntity>(
     }
   }, [setLoading, setJwtResponse, ServiceClass, jwtResponse]);
 
+  const fetchEntityById = async (id: string) => {
+    setLoading(true);
+    setError(null);
+    const service = new ServiceClass(setJwtResponse);
+    try {
+      checkJwtAndHandleError(jwtResponse);
+      const response = await service.getRequestById(id, jwtResponse!);
+      handleResponseErrors(response);
+      return response.data;
+    } catch (error) {
+      setError((error as Error).message);
+      throw new Error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     addEntity,
     editEntity,
@@ -96,6 +113,7 @@ const useEntityActions = <T extends IBaseEntity>(
     loading,
     error,
     refetch: fetchEntity,
+    fetchEntityById,
   };
 };
 

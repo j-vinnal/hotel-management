@@ -1,6 +1,17 @@
-import { useSearch } from '@/states/contexts/SearchContext';
+'use client';
+
+import {
+  IRoomAvailabilityRequest,
+  RoomAvailabilityRequestSchema,
+} from '@/interfaces/RoomAvailabilityRequest';
+import { RoomContext } from '@/states/contexts/RoomContext';
+import { formatDate, SearchContext } from '@/states/contexts/SearchContext';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const SearchBar = () => {
   const {
@@ -10,19 +21,47 @@ const SearchBar = () => {
     setCheckinDate,
     checkoutDate,
     setCheckoutDate,
-  } = useSearch();
+  } = useContext(SearchContext)!;
+
+  const { fetchRooms } = useContext(RoomContext)!;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+    control,
+  } = useForm<IRoomAvailabilityRequest>({
+    defaultValues: {
+      guests: guests,
+      startDate: checkinDate,
+      endDate: checkoutDate,
+    },
+    resolver: zodResolver(RoomAvailabilityRequestSchema),
+  });
+
+  const handleSubmitSearch = async (data: IRoomAvailabilityRequest) => {
+    try {
+      fetchRooms(data);
+    } catch (error) {
+      toast.error((error as Error).message);
+      setError('root', { type: 'server', message: (error as Error).message });
+    }
+  };
 
   const commonStyle = {
     height: '40px',
   };
 
   return (
-    <div
+    <form
+      onSubmit={handleSubmit(handleSubmitSearch)}
       className="d-flex align-items-center h-100 rounded bg-white p-2 shadow bg-light"
       style={{ gap: '10px' }}>
       {/* Dropdown for guest selection */}
       <div className="flex-grow-1 d-flex justify-content-center align-items-center">
         <select
+          {...register('guests', { valueAsNumber: true })}
           className="form-select w-100"
           aria-label="Guests select"
           value={guests}
@@ -31,6 +70,9 @@ const SearchBar = () => {
           <option value="2">Guests: 2</option>
           <option value="3">Guests: 3</option>
         </select>
+        {errors.guests && (
+          <span className="text-danger">{errors.guests.message}</span>
+        )}
       </div>
 
       {/* Divider */}
@@ -39,15 +81,27 @@ const SearchBar = () => {
         style={{ height: '40px', borderColor: '#d3d3d3', width: '1px' }}></div>
 
       {/* Check-in DatePicker */}
-      <div className="flex-grow-1 d-flex justify-content-center align-items-center">
-        <DatePicker
-          selected={checkinDate}
-          onChange={(date) => setCheckinDate(date ?? undefined)}
-          className="form-control w-100"
-          placeholderText="Check in"
-          style={commonStyle}
-        />
-      </div>
+      <Controller
+        control={control}
+        name="startDate"
+        render={({ field }) => (
+          <DatePicker
+            minDate={new Date()}
+            value={formatDate(checkinDate)}
+            selected={checkinDate ? new Date(checkinDate) : field.value}
+            onChange={(date) => {
+              field.onChange(date);
+              setCheckinDate(date!);
+            }}
+            className="form-control w-100"
+            placeholderText="Check in"
+            style={commonStyle}
+          />
+        )}
+      />
+      {errors.startDate && (
+        <span className="text-danger">{errors.startDate.message}</span>
+      )}
 
       {/* Divider */}
       <div
@@ -55,23 +109,37 @@ const SearchBar = () => {
         style={{ height: '40px', borderColor: '#d3d3d3', width: '1px' }}></div>
 
       {/* Check-out DatePicker */}
-      <div className="flex-grow-1 d-flex justify-content-center align-items-center">
-        <DatePicker
-          selected={checkoutDate}
-          onChange={(date) => setCheckoutDate(date ?? undefined)}
-          className="form-control w-100"
-          placeholderText="Check out"
-          style={commonStyle}
-        />
-      </div>
+      <Controller
+        control={control}
+        name="endDate"
+        render={({ field }) => (
+          <DatePicker
+            value={formatDate(checkoutDate)}
+            minDate={new Date()}
+            selected={checkoutDate ? new Date(checkoutDate) : field.value}
+            onChange={(date) => {
+              field.onChange(date);
+              setCheckoutDate(date!);
+            }}
+            className="form-control w-100"
+            placeholderText="Check out"
+            style={commonStyle}
+          />
+        )}
+      />
+      {errors.endDate && (
+        <span className="text-danger">{errors.endDate.message}</span>
+      )}
 
       {/* Search button */}
       <button
+        type="submit"
         className="btn btn-dark text-white px-4 flex-grow-1"
-        style={commonStyle}>
+        style={commonStyle}
+        disabled={isSubmitting}>
         Search
       </button>
-    </div>
+    </form>
   );
 };
 

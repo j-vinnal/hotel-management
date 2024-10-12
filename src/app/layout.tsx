@@ -1,15 +1,13 @@
 import BootstrapActivation from '@/components/BootstrapActivation';
 import Footer from '@/components/nav/Footer';
 import Header from '@/components/nav/Header';
-import JWTProvider from '@/states/providers/JWTProvider';
-import UserProvider from '@/states/providers/UserProvider';
+import Context from '@/states/contexts/Contexts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { SearchProvider } from '@/states/contexts/SearchContext';
-import { ToastContainer } from 'react-toastify';
 
+import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,22 +24,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <JWTProvider>
-          <UserProvider>
-            <SearchProvider>
-              <Header />
+        <Context>
+          <Header />
 
-              <div className="container">
-                <main role="main" className="container-row">
-                  {children}
-                </main>
-              </div>
-              <ToastContainer />
-              <Footer />
-              <BootstrapActivation />
-            </SearchProvider>
-          </UserProvider>
-        </JWTProvider>
+          <div className="container">
+            <main role="main" className="container-row">
+              {children}
+            </main>
+          </div>
+
+          <ToastContainer />
+          <Footer />
+          <BootstrapActivation />
+        </Context>
       </body>
     </html>
   );

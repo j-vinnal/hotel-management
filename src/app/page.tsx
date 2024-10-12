@@ -1,14 +1,12 @@
 'use client';
 
 import SearchBar from '@/components/SearchBar';
-import useEntityActions from '@/hooks/base/useEntityActions';
-import { IRoom } from '@/interfaces/domain/IRoom';
-import RoomService from '@/services/RoomService';
-import { useEffect, useState } from 'react';
+import { RoomContext } from '@/states/contexts/RoomContext';
+import { useContext, useEffect, useState } from 'react';
 import { FaBed, FaStar } from 'react-icons/fa';
 
 const HotelBookingPage = () => {
-  const { entities: rooms, loading, error, refetch } = useEntityActions<IRoom>(RoomService, false);
+  const { rooms, loading, error, fetchRooms } = useContext(RoomContext)!;
 
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const messages = [
@@ -22,7 +20,7 @@ const HotelBookingPage = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      if (scrollPosition > 140) {
+      if (scrollPosition > 120) {
         setIsSearchVisible(true);
       } else {
         setIsSearchVisible(false);
@@ -46,12 +44,16 @@ const HotelBookingPage = () => {
   useEffect(() => {
     if (rooms.length > 0) {
       const initialRatings: { [key: string]: string } = {};
-      rooms.forEach(room => {
+      rooms.forEach((room) => {
         initialRatings[room.id!] = (Math.random() * (5 - 3) + 3).toFixed(1);
       });
       setRatings(initialRatings);
     }
   }, [rooms]);
+
+  useEffect(() => {
+    fetchRooms();
+  }, [fetchRooms]);
 
   return (
     <div className="font-montserrat min-vh-100">
@@ -77,7 +79,7 @@ const HotelBookingPage = () => {
 
             <div
               className="d-flex justify-content-center mx-auto z-n1 "
-              style={{height: '70px', width: 'fit-content' }}>
+              style={{ height: '70px', width: 'fit-content' }}>
               <SearchBar />
             </div>
           </div>

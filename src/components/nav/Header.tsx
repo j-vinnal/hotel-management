@@ -20,7 +20,7 @@ export default function Header() {
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      if (scrollPosition > 140) {
+      if (scrollPosition > 120) {
         setIsSearchVisible(true);
       } else {
         setIsSearchVisible(false);
@@ -62,7 +62,6 @@ export default function Header() {
                 <SearchBar />
               </div>
             </ul>
-
             <Identity />
           </div>
         </div>

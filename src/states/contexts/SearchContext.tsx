@@ -1,22 +1,34 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import { format } from 'date-fns'; 
+import { createContext, useState } from 'react';
 
-interface ISearchContext {
+interface SearchContextType {
   guests: number;
-  setGuests: React.Dispatch<React.SetStateAction<number>>;
-  checkinDate?: Date;
-  setCheckinDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
-  checkoutDate?: Date;
-  setCheckoutDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setGuests: (guests: number) => void;
+  checkinDate: Date | undefined;
+  setCheckinDate: (date: Date | undefined) => void;
+  checkoutDate: Date | undefined;
+  setCheckoutDate: (date: Date | undefined) => void;
 }
 
-const SearchContext = createContext<ISearchContext | undefined>(undefined);
+export const formatDate = (
+  date: Date | undefined,
+  dateFormat: string = 'dd-MM-yyyy'
+): string => {
+  return date ? format(date, dateFormat) : '';
+};
 
-export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
+export const SearchContext = createContext<SearchContextType | undefined>(
+  undefined
+);
+
+export default function SearchProvider({
   children,
-}) => {
-  const [guests, setGuests] = useState(1);
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const [guests, setGuests] = useState<number>(1);
   const [checkinDate, setCheckinDate] = useState<Date | undefined>(undefined);
   const [checkoutDate, setCheckoutDate] = useState<Date | undefined>(undefined);
 
@@ -33,12 +45,4 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </SearchContext.Provider>
   );
-};
-
-export const useSearch = () => {
-  const context = useContext(SearchContext);
-  if (!context) {
-    throw new Error('useSearch must be used within a SearchProvider');
-  }
-  return context;
-};
+}

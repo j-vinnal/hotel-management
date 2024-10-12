@@ -1,5 +1,6 @@
 import { IBaseEntity } from '@/interfaces/domain/IBaseEntity';
 import { JWTContext } from '@/states/contexts/JWTContext';
+
 import { checkJwtAndHandleError } from '@/utils/checkJwtAndHandleError';
 
 import { handleResponseErrors } from '@/utils/handleResponseErrors';
@@ -62,8 +63,6 @@ const useEntityActions = <T extends IBaseEntity>(
     }
   };
 
-
-  // Fetch entity, public or private
   const fetchEntity = useCallback(async () => {
     setLoading(true);
     const service = new ServiceClass(setJwtResponse);
@@ -83,13 +82,13 @@ const useEntityActions = <T extends IBaseEntity>(
     } finally {
       setLoading(false);
     }
-  }, [setLoading, setJwtResponse, ServiceClass, jwtResponse, requireJwt]);
+  }, [setLoading, setJwtResponse, ServiceClass, jwtResponse]);
 
   useEffect(() => {
-    if (!requireJwt || jwtResponse) {
+    if (!requireJwt ||jwtResponse) {
       fetchEntity();
     }
-  }, [jwtResponse, setJwtResponse, fetchEntity, requireJwt]);
+  }, [jwtResponse, setJwtResponse, fetchEntity]);
 
   return {
     addEntity,

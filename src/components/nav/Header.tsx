@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Identity from './Identity';
+import { useHotel } from '@/states/contexts/HotelContext';
+
 
 export default function Header() {
   const pathname = usePathname();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-
+  const { hotelName } = useHotel();
 
   useEffect(() => {
     const isHomePage = pathname === '/';
@@ -40,7 +42,7 @@ export default function Header() {
       <nav className="navbar py-3 navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
         <div className="container">
           <Link href="/" className="navbar-brand">
-            Hotel X
+            {hotelName || 'Hotel X'}
           </Link>
           <button
             className="navbar-toggler"

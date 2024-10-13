@@ -6,14 +6,13 @@ export interface IHotel extends IBaseEntity {
     address: string;
     phoneNumber: string;
     email: string;
-    appUserId: string;
+
 }
 
 export const hotelSchema = z.object({
     id: z.string().uuid().optional(),
-    name: z.string().max(256, { message: 'Name must be at most 256 characters long' }),
-    address: z.string().max(256, { message: 'Address must be at most 256 characters long' }),
+    name: z.string().min(1, { message: 'Name is required' }),
+    address: z.string().min(1, { message: 'Address is required' }),
     phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }),
-    email: z.string().email({ message: 'Invalid email address' }),
-    appUserId: z.string().uuid({ message: 'Invalid App User ID' })
+    email: z.string().email({ message: 'Invalid email address' })
 }) satisfies ZodType<IHotel>;

@@ -42,14 +42,14 @@ const AdminPage = () => {
                 <td>{room.bedCount}</td>
                 <td>{room.price}</td>
                 <td>
-                  {(room.imageUrl?.length ?? 0) > 30 ? `${room.imageUrl!.substring(0, 30)}...` : room.imageUrl ?? 'No Image'}
+                  {(room.imageUrl?.length ?? 0) > 30 ?
+                    `${room.imageUrl!.substring(0, 30)}...`
+                  : (room.imageUrl ?? 'No Image')}
                 </td>
                 <td>
-                  <a href={`admin/rooms/edit/${room.id}`}>Edit</a>{' '}
-                  |
-                  <a href={`admin/rooms/details/${room.id}`}>Details</a>{' '}
-                  |
-                  <a href={`admin/rooms/delete/${room.id}`}>Delete</a>
+                  <Link href={`/admin/rooms/edit/${room.id}`}>Edit</Link> |
+                  <Link href={`/admin/rooms/details/${room.id}`}>Details</Link>{' '}
+                  |<Link href={`/admin/rooms/delete/${room.id}`}>Delete</Link>
                 </td>
               </tr>
             ))}

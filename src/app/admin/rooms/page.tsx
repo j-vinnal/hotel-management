@@ -47,9 +47,9 @@ const AdminPage = () => {
                   : (room.imageUrl ?? 'No Image')}
                 </td>
                 <td>
-                  <Link href={`/admin/rooms/edit/${room.id}`}>Edit</Link> |
-                  <Link href={`/admin/rooms/details/${room.id}`}>Details</Link>{' '}
-                  |<Link href={`/admin/rooms/delete/${room.id}`}>Delete</Link>
+                  <Link href={`/admin/rooms/edit/${room.id}`}>Edit</Link> |{' '}
+                  <Link href={`/admin/rooms/details/${room.id}`}>Details</Link> |{' '}
+                  <Link href={`/admin/rooms/delete/${room.id}`}>Delete</Link>
                 </td>
               </tr>
             ))}

@@ -1,10 +1,9 @@
 'use client';
 
-import { IRoom } from '@/interfaces/domain/IRoom';
+import React, { createContext } from 'react';
+import useFetchRooms from '@/hooks/useFetchRooms';
 import { IRoomAvailabilityRequest } from '@/interfaces/IRoomAvailabilityRequest';
-import RoomService from '@/services/RoomService';
-import { handleResponseErrors } from '@/utils/handleResponseErrors';
-import React, { createContext, useCallback, useState } from 'react';
+import { IRoom } from '@/interfaces/domain/IRoom';
 
 interface RoomContextType {
   rooms: IRoom[];
@@ -22,29 +21,7 @@ export default function RoomProvider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [rooms, setRooms] = useState<IRoom[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchRooms = useCallback(
-    async (availabilityRequest?: IRoomAvailabilityRequest) => {
-      setLoading(true);
-      setError(null);
-      const service = new RoomService(null);
-      try {
-        const response = await service.getAvailableRooms(
-          availabilityRequest || {}
-        );
-        handleResponseErrors(response);
-        setRooms(response.data || []);
-      } catch (error) {
-        setError((error as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
+  const { rooms, loading, error, fetchRooms } = useFetchRooms();
 
   return (
     <RoomContext.Provider value={{ rooms, loading, error, fetchRooms }}>

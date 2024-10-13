@@ -53,8 +53,6 @@ const SearchBar = () => {
   }, [guestCount, startDate, endDate, reset]);
 
   const handleSubmitSearch = async (data: IRoomAvailabilityRequest) => {
-    console.log('search data', data);
-
     try {
       await fetchRooms(data);
       // Redirect to main page if not already there

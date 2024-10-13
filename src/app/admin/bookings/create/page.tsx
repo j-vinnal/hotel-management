@@ -18,70 +18,49 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-const EditBookingPage = (params: { params: { id?: string } }) => {
+const CreateBookingPage = () => {
   const router = useRouter();
-  const id = params.params.id;
-  const { fetchEntityById, editEntity } =
-    useEntityActions<IBooking>(BookingService);
+  const { addEntity } = useEntityActions<IBooking>(BookingService);
   const { rooms, fetchRooms } = useContext(RoomContext)!;
   const { entities: clients, refetch: fetchClients } =
     useEntityActions<IClient>(ClientService);
-  const [booking, setBooking] = useState<IBooking | null>(null);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
     setError,
     setValue,
   } = useForm<IBooking>({
     defaultValues: {
-      startDate: booking?.startDate,
-      endDate: booking?.endDate,
-      roomId: booking?.roomId,
-      questId: booking?.questId,
-      isCancelled: booking?.isCancelled,
+      startDate: new Date(),
+      endDate: new Date(),
+      roomId: '',
+      questId: '',
+      isCancelled: false,
     },
     resolver: zodResolver(bookingSchema),
   });
 
-  const fetchBooking = async () => {
-    const bookingData = await fetchEntityById(id as string);
-    setBooking(bookingData);
-    reset(bookingData);
-  };
+  useEffect(() => {
+    const availabilityRequest: IRoomAvailabilityRequest = {
+      startDate,
+      endDate,
+    };
+
+    fetchRooms(availabilityRequest);
+  }, [startDate, endDate, fetchRooms]);
 
   useEffect(() => {
-    if (id) {
-      fetchBooking();
-      fetchClients();
-
-      const availabilityRequest: IRoomAvailabilityRequest = {
-        startDate: booking?.startDate,
-        endDate: booking?.endDate,
-        currentBookingId: booking?.id,
-      };
-      fetchRooms(availabilityRequest);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (booking) {
-      const availabilityRequest: IRoomAvailabilityRequest = {
-        startDate: booking.startDate,
-        endDate: booking.endDate,
-        currentBookingId: booking.id,
-      };
-
-      fetchRooms(availabilityRequest);
-    }
-  }, [booking?.startDate, booking?.endDate, fetchRooms]);
+    fetchClients();
+  }, [fetchClients]);
 
   const onSubmit = async (data: IBooking) => {
     try {
-      await editEntity(id as string, data);
-      toast.success('Booking updated successfully!');
+      await addEntity(data);
+      toast.success('Booking created successfully!');
       router.push('/admin/bookings');
     } catch (error) {
       toast.error((error as Error).message);
@@ -89,13 +68,9 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
     }
   };
 
-  if (!booking) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <AdminLayout>
-      <h1>Edit</h1>
+      <h1>Create</h1>
       <h4>Booking</h4>
       <hr />
       <div className="row">
@@ -110,12 +85,15 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
               type="select"
               register={register('roomId')}
               error={errors.roomId}
-              options={rooms
-                .filter((room) => room.id !== undefined)
-                .map((room) => ({
-                  value: room.id as string,
-                  label: `${room.roomName} - ${room.roomNumber}`,
-                }))}
+              options={[
+                { value: '', label: 'Select a room' },
+                ...rooms
+                  .filter((room) => room.id !== undefined)
+                  .map((room) => ({
+                    value: room.id as string,
+                    label: `${room.roomName} - ${room.roomNumber}`,
+                  })),
+              ]}
               styleType="form-group"
             />
 
@@ -125,12 +103,15 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
               type="select"
               register={register('questId')}
               error={errors.questId}
-              options={clients
-                .filter((client) => client.id !== undefined)
-                .map((client) => ({
-                  value: client.id as string,
-                  label: `${client.firstName} ${client.lastName}`,
-                }))}
+              options={[
+                { value: '', label: 'Select a client' },
+                ...clients
+                  .filter((client) => client.id !== undefined)
+                  .map((client) => ({
+                    value: client.id as string,
+                    label: `${client.firstName} ${client.lastName}`,
+                  })),
+              ]}
               styleType="form-group"
             />
 
@@ -139,14 +120,11 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
               label="Check-in date"
               type="date"
               register={register('startDate')}
+              selectedDate={startDate}
               error={errors.startDate}
-              selectedDate={new Date(booking.startDate)}
               onDateChange={(date) => {
                 setValue('startDate', date!);
-                setBooking((prev) => ({
-                  ...prev!,
-                  startDate: date!,
-                }));
+                setStartDate(date!);
               }}
               styleType="form-group"
             />
@@ -156,14 +134,11 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
               label="Check-out date"
               type="date"
               register={register('endDate')}
+              selectedDate={endDate}
               error={errors.endDate}
-              selectedDate={new Date(booking.endDate)}
               onDateChange={(date) => {
                 setValue('endDate', date!);
-                setBooking((prev) => ({
-                  ...prev!,
-                  endDate: date!,
-                }));
+                setEndDate(date!);
               }}
               styleType="form-group"
             />
@@ -174,13 +149,8 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
               type="checkbox"
               register={register('isCancelled')}
               error={errors.isCancelled}
-              checked={booking.isCancelled}
               onCheckedChange={(checked) => {
                 setValue('isCancelled', checked);
-                setBooking((prev) => ({
-                  ...prev!,
-                  isCancelled: checked,
-                }));
               }}
               styleType="form-group"
             />
@@ -204,4 +174,4 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
   );
 };
 
-export default withAdminAuth(EditBookingPage);
+export default withAdminAuth(CreateBookingPage);

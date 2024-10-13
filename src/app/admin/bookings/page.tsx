@@ -22,7 +22,7 @@ const AdminPage = () => {
       <h2>Manage bookings</h2>
       <div className="pt-4">
         <p>
-          <a href="/Bookings/Create">Create New</a>
+          <Link href="/admin/bookings/create">Create New</Link>
         </p>
         <table className="table">
           <thead>
@@ -54,14 +54,9 @@ const AdminPage = () => {
                   />
                 </td>
                 <td>
-                  <Link href={`/admin/bookings/edit/${booking.id}`}>Edit</Link>|
-                  <Link href={`/admin/bookings/edit/${booking.id}`}>
-                    Details
-                  </Link>
-                  |
-                  <Link href={`/admin/bookings/edit/${booking.id}`}>
-                    Delete
-                  </Link>
+                  <Link href={`/admin/bookings/edit/${booking.id}`}>Edit</Link> |{' '}
+                  <Link href={`/admin/bookings/details/${booking.id}`}>Details</Link> |{' '}
+                  <Link href={`/admin/bookings/delete/${booking.id}`}>Delete</Link>
                 </td>
               </tr>
             ))}

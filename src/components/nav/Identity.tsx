@@ -5,7 +5,7 @@ import { UserContext } from '@/states/contexts/UserContext';
 import { Admin } from '@/utils/roleConstants';
 
 import Link from 'next/link';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 export default function Identity() {
   const { user } = useContext(UserContext)!;
@@ -15,13 +15,7 @@ export default function Identity() {
 const LoggedIn = () => {
   const { logoutAccount } = useAccountActions();
 
-  
   const { user } = useContext(UserContext)!;
-
-  //for debugging
-  useEffect(() => {
-    console.log(JSON.stringify(user, null, 2));
-  }, [user]);
 
   return (
     <ul className="navbar-nav">

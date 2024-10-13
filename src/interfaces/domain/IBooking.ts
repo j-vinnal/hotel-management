@@ -3,10 +3,10 @@ import { IBaseEntity } from "./IBaseEntity";
 
 export interface IBooking extends IBaseEntity {
     roomId: string;
-    roomNumber: number;
+    roomNumber?: number;
     questFirstName?: string;
     questLastName?: string;
-    questId?: string;
+    questId: string;
     startDate: Date;
     endDate: Date;
     isCancelled: boolean;
@@ -14,11 +14,11 @@ export interface IBooking extends IBaseEntity {
 
 export const bookingSchema = z.object({
     id: z.string().uuid().optional(),
-    roomId: z.string().uuid({ message: 'Invalid Room ID' }),
-    roomNumber: z.number(),
+    roomId: z.string().uuid({ message: 'Invalid room' }),
+    roomNumber: z.number().optional(),
     questFirstName: z.string().optional(),
     questLastName: z.string().optional(),
-    questId: z.string().uuid().optional(),
+    questId: z.string().uuid({ message: 'Invalid quest' }),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     isCancelled: z.boolean()

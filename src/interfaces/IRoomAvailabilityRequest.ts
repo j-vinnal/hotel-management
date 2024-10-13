@@ -4,6 +4,7 @@ export interface IRoomAvailabilityRequest {
   guestCount?: number;
   startDate?: Date;
   endDate?: Date;
+  currentBookingId?: string;
 }
 
 export const RoomAvailabilityRequestSchema = z
@@ -11,6 +12,7 @@ export const RoomAvailabilityRequestSchema = z
     startDate: z.coerce.date().optional(),
     endDate: z.coerce.date().optional(),
     guestCount: z.number().optional(),
+    currentBookingId: z.string().uuid().optional(),
   })
   .refine(
     (data) => {

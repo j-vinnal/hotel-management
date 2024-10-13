@@ -4,7 +4,7 @@ import { JWTContext } from '@/states/contexts/JWTContext';
 import { checkJwtAndHandleError } from '@/utils/checkJwtAndHandleError';
 
 import { handleResponseErrors } from '@/utils/handleResponseErrors';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
 const useEntityActions = <T extends IBaseEntity>(
   ServiceClass: any,
@@ -33,8 +33,6 @@ const useEntityActions = <T extends IBaseEntity>(
   };
 
   const editEntity = async (id: string, entity: T) => {
-    console.log('editEntity', id, entity);
-
     setLoading(true);
     setError(null);
     const service = new ServiceClass(setJwtResponse);
@@ -44,7 +42,6 @@ const useEntityActions = <T extends IBaseEntity>(
       handleResponseErrors(response);
       return response.data;
     } catch (error) {
-      console.log('editEntity error', error);
       setError((error as Error).message);
       throw new Error((error as Error).message);
     } finally {

@@ -19,16 +19,16 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         className="col-12 col-lg-3 position-sticky"
         style={{ top: '128px', marginRight: '32px' }}>
         <div
-          className="d-flex flex-column justify-content-between rounded-xl bg-light rounded-4 p-4"
-          style={{ fontSize: '22px', color: '#763250' }}>
+          className="d-flex flex-column justify-content-between rounded-xl rounded-4 p-4"
+          style={{ fontSize: '22px', color: '#763250', backgroundColor: '#fff0f6' }}>
           <Link
             href="/account"
-            className={`text-left nav-link ${pathname === '/account' ? 'text-bold' : ''} hover-bold`}>
+            className={`text-left nav-link ${pathname === '/account' ? 'text-bold' : ''} hover-bold mb-3`}>
             Upcoming bookings
           </Link>
           <Link
             href="/account/previous-bookings"
-            className={`text-left nav-link ${pathname === '/account/previous-bookings' ? 'text-bold' : ''} hover-bold`}>
+            className={`text-left nav-link ${pathname === '/account/previous-bookings' ? 'text-bold' : ''} hover-bold mb-3`}>
             Previous bookings
           </Link>
           <Link
@@ -37,9 +37,9 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
             Account details
           </Link>
 
-          <hr />
+          <hr className="mb-3" />
           {user?.role === Admin && (
-            <Link href="/admin" className={'text-left nav-link hover-bold'}>
+            <Link href="/admin" className={'text-left nav-link hover-bold mb-3'}>
               Admin
             </Link>
           )}

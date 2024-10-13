@@ -16,10 +16,15 @@ export default class RoomService extends BaseEntityService<IRoom> {
     );
   }
 
-  private convertToUTC(date?: Date): Date | undefined {
+  private convertToUTC(date?: Date | string): Date | undefined {
     if (!date) return undefined;
+    const parsedDate = typeof date === 'string' ? new Date(date) : date;
     return new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+      Date.UTC(
+        parsedDate.getFullYear(),
+        parsedDate.getMonth(),
+        parsedDate.getDate()
+      )
     );
   }
 
@@ -32,7 +37,6 @@ export default class RoomService extends BaseEntityService<IRoom> {
       endDate: this.convertToUTC(request.endDate),
     };
 
-    console.log('request', utcRequest);
     try {
       const response = await this.axios.get<IRoom[]>('', {
         params: utcRequest,

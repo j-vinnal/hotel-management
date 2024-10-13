@@ -5,6 +5,7 @@ import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
 import { IRoom } from '@/interfaces/domain/IRoom';
 import RoomService from '@/services/RoomService';
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 const AdminPage = () => {
@@ -20,7 +21,7 @@ const AdminPage = () => {
       <h2>Manage rooms</h2>
       <div className="pt-4">
         <p>
-          <a href="/Rooms/Create">Create New</a>
+          <Link href="/admin/rooms/create">Create New</Link>
         </p>
         <table className="table">
           <thead>
@@ -44,11 +45,11 @@ const AdminPage = () => {
                   {(room.imageUrl?.length ?? 0) > 30 ? `${room.imageUrl!.substring(0, 30)}...` : room.imageUrl ?? 'No Image'}
                 </td>
                 <td>
-                  <a href={`/Rooms/Edit/${room.id}`}>Edit</a>{' '}
+                  <a href={`admin/rooms/edit/${room.id}`}>Edit</a>{' '}
                   |
-                  <a href={`/Rooms/Details/${room.id}`}>Details</a>{' '}
+                  <a href={`admin/rooms/details/${room.id}`}>Details</a>{' '}
                   |
-                  <a href={`/Rooms/Delete/${room.id}`}>Delete</a>
+                  <a href={`admin/rooms/delete/${room.id}`}>Delete</a>
                 </td>
               </tr>
             ))}

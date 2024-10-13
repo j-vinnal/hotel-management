@@ -5,6 +5,8 @@ import { RoomContext } from '@/states/contexts/RoomContext';
 import { SearchContext } from '@/states/contexts/SearchContext';
 import { useContext, useEffect, useState } from 'react';
 import { FaBed, FaStar } from 'react-icons/fa';
+import Image from 'next/image';
+import defaultImage from '../../public/images/default-image.webp';
 
 const HotelBookingPage = () => {
   const { rooms, loading, error, fetchRooms } = useContext(RoomContext)!;
@@ -101,11 +103,17 @@ const HotelBookingPage = () => {
                       height: '400px',
                       transition: 'transform 0.3s ease',
                     }}>
-                    <img
-                      src={room.imageUrl}
+
+                    <Image
+                      src={room.imageUrl || defaultImage.src}
                       className="card-img-top"
                       alt={room.roomName}
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{minHeight:'270px', width: '100%', height: 'auto', objectFit: 'cover' }}
                     />
+
                     <div className="card-body">
                       <h5 className="card-title">{room.roomName}</h5>
                       <p className="card-text mb-4" style={{ fontSize: '0.9em' }}>

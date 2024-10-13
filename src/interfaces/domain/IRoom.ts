@@ -22,6 +22,6 @@ export const roomSchema = z.object({
     .int()
     .min(1, { message: 'Bed count must be at least 1' }),
   price: z.number().min(0, { message: 'Price must be a non-negative number' }),
-  imageUrl: z.string().url({ message: 'Invalid image URL' }).optional(),
+  imageUrl: z.string().optional(),
   hotelId: z.string().uuid({ message: 'Invalid Hotel ID' }),
 }) satisfies ZodType<IRoom>;

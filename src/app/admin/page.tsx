@@ -1,3 +1,6 @@
+'use client';
+
+import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 
 const AdminPage = () => {
@@ -45,4 +48,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default withAdminAuth(AdminPage);

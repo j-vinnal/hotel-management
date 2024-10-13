@@ -1,11 +1,9 @@
+'use client';
+
+import withAuth from '@/components/hoc/withAuth';
 import MainLayout from '@/components/layouts/MainLayout';
-import useEntityActions from '@/hooks/base/useEntityActions';
-import { IBooking } from '@/interfaces/domain/IBooking';
-import BookingService from '@/services/BookingService';
 
 const AccountPage = () => {
-  
-
   return (
     <MainLayout>
       <h2>Upcoming bookings</h2>
@@ -52,4 +50,4 @@ const AccountPage = () => {
   );
 };
 
-export default AccountPage;
+export default withAuth(AccountPage);

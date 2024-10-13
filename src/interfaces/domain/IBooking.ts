@@ -13,12 +13,20 @@ export interface IBooking extends IBaseEntity {
 }
 
 export const bookingSchema = z.object({
+    id: z.string().uuid().optional(),
     roomId: z.string().uuid({ message: 'Invalid Room ID' }),
     roomNumber: z.number(),
     questFirstName: z.string().optional(),
     questLastName: z.string().optional(),
     questId: z.string().uuid().optional(),
-    startDate: z.date(),
-    endDate: z.date(),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
     isCancelled: z.boolean()
-}) satisfies ZodType<IBooking>;
+})
+.refine(
+    (data) => data.endDate >= data.startDate,
+    {
+        message: "End date cannot be earlier than start date",
+        path: ["endDate"],
+    }
+) satisfies ZodType<IBooking>;

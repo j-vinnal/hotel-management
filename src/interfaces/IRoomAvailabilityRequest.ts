@@ -8,8 +8,8 @@ export interface IRoomAvailabilityRequest {
 
 export const RoomAvailabilityRequestSchema = z
   .object({
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
+    startDate: z.coerce.date().optional(),
+    endDate: z.coerce.date().optional(),
     guestCount: z.number().optional(),
   })
   .refine(

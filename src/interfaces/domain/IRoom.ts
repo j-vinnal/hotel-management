@@ -11,6 +11,7 @@ export interface IRoom extends IBaseEntity {
 }
 
 export const roomSchema = z.object({
+  id: z.string().uuid().optional(),
   roomName: z.string().min(1, { message: 'Room name is required' }),
   roomNumber: z
     .number()

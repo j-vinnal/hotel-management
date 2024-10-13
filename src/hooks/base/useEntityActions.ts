@@ -33,6 +33,8 @@ const useEntityActions = <T extends IBaseEntity>(
   };
 
   const editEntity = async (id: string, entity: T) => {
+    console.log('editEntity', id, entity);
+
     setLoading(true);
     setError(null);
     const service = new ServiceClass(setJwtResponse);
@@ -42,6 +44,7 @@ const useEntityActions = <T extends IBaseEntity>(
       handleResponseErrors(response);
       return response.data;
     } catch (error) {
+      console.log('editEntity error', error);
       setError((error as Error).message);
       throw new Error((error as Error).message);
     } finally {

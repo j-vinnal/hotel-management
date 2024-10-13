@@ -1,18 +1,17 @@
 'use client';
 
+import FormInput from '@/components/FormInput';
 import {
   IRoomAvailabilityRequest,
   RoomAvailabilityRequestSchema,
-} from '@/interfaces/RoomAvailabilityRequest';
+} from '@/interfaces/IRoomAvailabilityRequest';
 import { RoomContext } from '@/states/contexts/RoomContext';
 import { SearchContext } from '@/states/contexts/SearchContext';
-import { formatDate } from '@/utils/formatDate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname, useRouter } from 'next/navigation';
 import { useContext, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 const SearchBar = () => {
@@ -34,7 +33,7 @@ const SearchBar = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
-    control,
+    setValue,
     reset,
   } = useForm<IRoomAvailabilityRequest>({
     defaultValues: {
@@ -94,84 +93,48 @@ const SearchBar = () => {
       onSubmit={handleSubmit(handleSubmitSearch)}
       className="d-flex flex-column flex-md-row align-items-center h-100 rounded bg-white p-2 shadow bg-light"
       style={{ gap: '10px' }}>
-      {/* Dropdown for guest selection */}
-      <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-        <select
-          {...register('guestCount', { valueAsNumber: true })}
-          className="form-select w-100"
-          aria-label="Guests select"
-          value={guestCount}
-          onChange={(e) => setGuestCount(Number(e.target.value))}>
-          <option value="1">Guests: 1</option>
-          <option value="2">Guests: 2</option>
-          <option value="3">Guests: 3</option>
-        </select>
-        {errors.guestCount && (
-          <span className="text-danger">{errors.guestCount.message}</span>
-        )}
-      </div>
+      <FormInput
+        id="guestCount"
+        label="Guests"
+        type="select"
+        register={register('guestCount', { valueAsNumber: true })}
+        error={errors.guestCount}
+        options={[
+          { value: '1', label: 'Guests: 1' },
+          { value: '2', label: 'Guests: 2' },
+          { value: '3', label: 'Guests: 3' },
+        ]}
+        styleType="form-group"
+        showLabel={false}
+        marginBottomClass="mb-0"
+      />
 
-      {/* Divider */}
-      <div
-        className="border-end mx-2 d-none d-md-block"
-        style={{ height: '40px', borderColor: '#d3d3d3', width: '1px' }}></div>
+      <FormInput
+        id="startDate"
+        label="Check-in date"
+        type="date"
+        register={register('startDate')}
+        error={errors.startDate}
+        selectedDate={startDate ? new Date(startDate) : undefined}
+        onDateChange={(date) => setStartDate(date!)}
+        styleType="form-group"
+        showLabel={false}
+        marginBottomClass="mb-0"
+      />
 
-      {/* Check-in DatePicker */}
-      <div className="flex-grow-1 d-flex flex-column">
-        <Controller
-          control={control}
-          name="startDate"
-          render={({ field }) => (
-            <DatePicker
-              minDate={new Date()}
-              value={formatDate(startDate)}
-              selected={startDate ? new Date(startDate) : field.value}
-              onChange={(date) => {
-                field.onChange(date);
-                setStartDate(date!);
-              }}
-              className="form-control w-100"
-              placeholderText="Check in"
-              style={commonStyle}
-            />
-          )}
-        />
-        {errors.startDate && (
-          <span className="text-danger">{errors.startDate.message}</span>
-        )}
-      </div>
+      <FormInput
+        id="endDate"
+        label="Check-out date"
+        type="date"
+        register={register('endDate')}
+        error={errors.endDate}
+        selectedDate={endDate ? new Date(endDate) : undefined}
+        onDateChange={(date) => setEndDate(date!)}
+        styleType="form-group"
+        showLabel={false}
+        marginBottomClass="mb-0"
+      />
 
-      {/* Divider */}
-      <div
-        className="border-end mx-2 d-none d-md-block"
-        style={{ height: '40px', borderColor: '#d3d3d3', width: '1px' }}></div>
-
-      {/* Check-out DatePicker */}
-      <div className="flex-grow-1 d-flex flex-column">
-        <Controller
-          control={control}
-          name="endDate"
-          render={({ field }) => (
-            <DatePicker
-              value={formatDate(endDate)}
-              minDate={new Date()}
-              selected={endDate ? new Date(endDate) : field.value}
-              onChange={(date) => {
-                field.onChange(date);
-                setEndDate(date!);
-              }}
-              className="form-control w-100"
-              placeholderText="Check out"
-              style={commonStyle}
-            />
-          )}
-        />
-        {errors.endDate && (
-          <span className="text-danger">{errors.endDate.message}</span>
-        )}
-      </div>
-
-      {/* Search button */}
       <button
         type="submit"
         className="btn btn-dark text-white px-4 flex-grow-1"
@@ -180,7 +143,6 @@ const SearchBar = () => {
         Search
       </button>
 
-      {/* Clear button */}
       <button
         type="button"
         className="btn btn-outline-dark px-2 flex-grow-1"

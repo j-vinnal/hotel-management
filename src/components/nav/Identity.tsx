@@ -2,6 +2,7 @@
 
 import useAccountActions from '@/hooks/identity/useAccountActions';
 import { UserContext } from '@/states/contexts/UserContext';
+import { Admin } from '@/utils/roleConstants';
 
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
@@ -14,9 +15,10 @@ export default function Identity() {
 const LoggedIn = () => {
   const { logoutAccount } = useAccountActions();
 
-  //for debugging
+  
   const { user } = useContext(UserContext)!;
 
+  //for debugging
   useEffect(() => {
     console.log(JSON.stringify(user, null, 2));
   }, [user]);
@@ -48,7 +50,7 @@ const LoggedIn = () => {
           className="dropdown-menu"
           aria-labelledby="userDropdown"
           style={{ position: 'absolute' }}>
-          {user!.role === 'Admin' && (
+          {user!.role === Admin && (
             <li>
               <Link href="/admin" className="dropdown-item" title="Admin">
                 Admin

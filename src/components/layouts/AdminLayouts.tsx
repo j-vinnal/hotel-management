@@ -1,24 +1,13 @@
 'use client';
 
-import { UserContext } from '@/states/contexts/UserContext';
+import useAccountActions from '@/hooks/identity/useAccountActions';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import withAdminAuth from '../hoc/withAdminAuth';
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const router = useRouter();
-  const { user } = useContext(UserContext)!;
-
-  useEffect(() => {
-    if (!user || user.role !== 'Admin') {
-      router.push('/login');
-    }
-  }, [user, router]);
-
-  if (!user || user.role !== 'Admin') {
-    return null;
-  }
+  const { logoutAccount } = useAccountActions();
 
   return (
     <div className="row g-4">
@@ -43,6 +32,17 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             className={`text-left nav-link ${pathname === '/admin/bookings' ? 'text-bold' : ''} hover-bold`}>
             Manage bookings
           </Link>
+
+          <hr />
+          <Link href="/account" className={'text-left nav-link hover-bold'}>
+            My account
+          </Link>
+
+          <button
+            onClick={logoutAccount}
+            className="text-left nav-link hover-bold btn-text-left-align">
+            Log out
+          </button>
         </div>
       </div>
 
@@ -51,4 +51,4 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default AdminLayout;
+export default withAdminAuth(AdminLayout);

@@ -155,3 +155,27 @@ button.accept-policy {
     width: 100%;
   }
 }
+
+/* spinner */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #09f;
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.datepicker-w-100,
+.datepicker-w-100 > .react-datepicker-wrapper,
+.datepicker-w-100 > .react-datepicker-wrapper > .react-datepicker__input-container,
+.datepicker-w-100 > .react-datepicker-wrapper > .react-datepicker__input-container input {
+  width: 100% !important;
+  box-sizing: border-box; 
+}

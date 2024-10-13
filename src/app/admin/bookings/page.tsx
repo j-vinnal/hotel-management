@@ -1,18 +1,17 @@
 'use client';
 
+import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
 import { IBooking } from '@/interfaces/domain/IBooking';
 import BookingService from '@/services/BookingService';
 import { formatDate } from '@/utils/formatDate';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const AdminPage = () => {
-  const { entities: bookings, refetch: fetchEntity } = useEntityActions<IBooking>(
-    BookingService
-  );
- 
+  const { entities: bookings, refetch: fetchEntity } =
+    useEntityActions<IBooking>(BookingService);
 
   useEffect(() => {
     fetchEntity();
@@ -55,11 +54,14 @@ const AdminPage = () => {
                   />
                 </td>
                 <td>
-                  <Link href={`/admin/bookings/edit/${booking.id}`}>Edit</Link>
+                  <Link href={`/admin/bookings/edit/${booking.id}`}>Edit</Link>|
+                  <Link href={`/admin/bookings/edit/${booking.id}`}>
+                    Details
+                  </Link>
                   |
-                  <Link href={`/admin/bookings/edit/${booking.id}`}>Details</Link>
-                  |
-                  <Link href={`/admin/bookings/edit/${booking.id}`}>Delete</Link>
+                  <Link href={`/admin/bookings/edit/${booking.id}`}>
+                    Delete
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -70,4 +72,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default withAdminAuth(AdminPage);

@@ -2,25 +2,16 @@
 
 import useAccountActions from '@/hooks/identity/useAccountActions';
 import { UserContext } from '@/states/contexts/UserContext';
+import { Admin } from '@/utils/roleConstants';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { useContext } from 'react';
+import withAuth from '../hoc/withAuth';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { user } = useContext(UserContext)!;
   const { logoutAccount } = useAccountActions();
   const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user) {
-      router.push('/login');
-    }
-  }, [user, router]);
-
-  if (!user) {
-    return null;
-  }
 
   return (
     <div className="row g-4">
@@ -45,6 +36,14 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
             className={`text-left nav-link ${pathname === '/account/details' ? 'text-bold' : ''} hover-bold`}>
             Account details
           </Link>
+
+          <hr />
+          {user?.role === Admin && (
+            <Link href="/admin" className={'text-left nav-link hover-bold'}>
+              Admin
+            </Link>
+          )}
+
           <button
             onClick={logoutAccount}
             className="text-left nav-link hover-bold btn-text-left-align">
@@ -58,4 +57,4 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default MainLayout;
+export default withAuth(MainLayout);

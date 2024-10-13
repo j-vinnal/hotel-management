@@ -1,5 +1,6 @@
 'use client';
 
+import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
 import { IRoom } from '@/interfaces/domain/IRoom';
@@ -58,4 +59,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default withAdminAuth(AdminPage);

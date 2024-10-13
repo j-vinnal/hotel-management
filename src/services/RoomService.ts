@@ -1,7 +1,7 @@
 import { IResultObject } from '@/interfaces/auth/IResultObject';
 import { IRoom } from '@/interfaces/domain/IRoom';
 import { IJWTResponse } from '@/interfaces/IJWTResponse';
-import { IRoomAvailabilityRequest } from '@/interfaces/RoomAvailabilityRequest';
+import { IRoomAvailabilityRequest } from '@/interfaces/IRoomAvailabilityRequest';
 import { BaseEntityService } from './base/BaseEntityService';
 
 export default class RoomService extends BaseEntityService<IRoom> {

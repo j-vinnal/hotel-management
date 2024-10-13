@@ -1,3 +1,6 @@
+'use client';
+
+import withAuth from '@/components/hoc/withAuth';
 import MainLayout from '@/components/layouts/MainLayout';
 
 const AccountPage = () => {
@@ -47,4 +50,4 @@ const AccountPage = () => {
   );
 };
 
-export default AccountPage;
+export default withAuth(AccountPage);

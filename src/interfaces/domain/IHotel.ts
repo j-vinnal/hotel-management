@@ -10,6 +10,7 @@ export interface IHotel extends IBaseEntity {
 }
 
 export const hotelSchema = z.object({
+    id: z.string().uuid().optional(),
     name: z.string().max(256, { message: 'Name must be at most 256 characters long' }),
     address: z.string().max(256, { message: 'Address must be at most 256 characters long' }),
     phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }),

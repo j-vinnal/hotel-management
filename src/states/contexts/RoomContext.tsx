@@ -1,7 +1,7 @@
 'use client';
 
 import { IRoom } from '@/interfaces/domain/IRoom';
-import { IRoomAvailabilityRequest } from '@/interfaces/RoomAvailabilityRequest';
+import { IRoomAvailabilityRequest } from '@/interfaces/IRoomAvailabilityRequest';
 import RoomService from '@/services/RoomService';
 import { handleResponseErrors } from '@/utils/handleResponseErrors';
 import React, { createContext, useCallback, useState } from 'react';

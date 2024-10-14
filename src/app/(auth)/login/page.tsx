@@ -19,7 +19,7 @@ export default function LoginPage() {
     setError,
   } = useForm<ILoginData>({
     defaultValues: {
-      email: 'jyri.vinnal@gmail.com',
+      email: 'admin@hotelx.com',
       password: 'Foo.Bar1',
     },
     resolver: zodResolver(LoginSchema),

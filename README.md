@@ -21,16 +21,6 @@ The project is organized into several key directories and files:
 
 - **`public/`**: Contains static assets such as images and icons.
 
-## Key Features
-
-- **Next.js Framework**: Utilizes Next.js for its server-side rendering capabilities, which improve SEO and performance. The framework's built-in image optimization and dynamic routing features are particularly beneficial for a hotel booking application.
-
-- **Dynamic Routing**: The use of `[id].tsx` in the `pages` directory allows for dynamic routing, making it easy to create pages for individual hotel rooms based on their IDs.
-
-- **Image Optimization**: Next.js automatically optimizes images, ensuring fast load times and a better user experience.
-
-- **JWT Authentication**: The application uses JWT for secure authentication. The `BaseEntityService` class handles token refresh logic to maintain user sessions.
-
 
 ## Seeded Users
 
@@ -45,6 +35,19 @@ The application comes with pre-configured users for testing purposes:
   - **Password**: `Guest.Pass1`
 
 When registering a new user through the application, the user will be created with regular user privileges.
+
+## Key Features
+
+- **Next.js Framework**: Utilizes Next.js for its server-side rendering capabilities, which improve SEO and performance. The framework's built-in image optimization and dynamic routing features are particularly beneficial for a hotel booking application.
+
+- **Dynamic Routing**: The use of `[id].tsx` in the `pages` directory allows for dynamic routing, making it easy to create pages for individual hotel rooms based on their IDs.
+
+- **Image Optimization**: Next.js automatically optimizes images, ensuring fast load times and a better user experience.
+
+- **JWT Authentication**: The application uses JWT for secure authentication. The `BaseEntityService` class handles token refresh logic to maintain user sessions.
+
+
+
 
 
 ## Getting Started

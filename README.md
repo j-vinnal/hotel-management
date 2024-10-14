@@ -21,6 +21,9 @@ The project is organized into several key directories and files:
 
 - **`public/`**: Contains static assets such as images and icons.
 
+## Important Note
+
+While in-memory databases can be useful for certain backend operations, it is generally not recommended to use them for frontend applications. In-memory databases do not persist data across sessions, which can lead to data loss when the application is closed or refreshed. 
 
 ## Seeded Users
 

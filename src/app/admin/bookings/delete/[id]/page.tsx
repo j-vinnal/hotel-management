@@ -31,6 +31,7 @@ const DeleteBookingPage = (params: { params: { id?: string } }) => {
   }, [id]);
 
   const onSubmit = async (entityId: string) => {
+    console.log('onSubmit', entityId);
     try {
       await deleteEntity(entityId);
       toast.success('Booking deleted successfully!');

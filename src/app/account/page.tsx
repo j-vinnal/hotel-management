@@ -49,8 +49,8 @@ const MyBookingsPage = () => {
             {bookings.map((booking) => {
               const startDate = new Date(booking.startDate);
               const currentDate = new Date();
-              const threeDaysAgo = new Date();
-              threeDaysAgo.setDate(currentDate.getDate() - CancellationDaysLimit);
+              const threeDaysLimit = new Date();
+              threeDaysLimit.setDate(currentDate.getDate() + CancellationDaysLimit);
 
               return (
                 <tr key={booking.id}>
@@ -69,7 +69,7 @@ const MyBookingsPage = () => {
                   </td>
                   <td>
                     <Link href={`account/booking/details/${booking.id}`}>Details</Link>
-                    {startDate > threeDaysAgo && !booking.isCancelled && (
+                    {startDate > threeDaysLimit && !booking.isCancelled && (
                       <>
                         {' '}|{' '}
                         <Link href={`account/booking/cancel/${booking.id}`}>

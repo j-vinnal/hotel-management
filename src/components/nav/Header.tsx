@@ -3,17 +3,25 @@
 import SearchBar from '@/components/SearchBar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Identity from './Identity';
 import { useHotel } from '@/states/contexts/HotelContext';
+import { UserContext } from '@/states/contexts/UserContext';
 
 
 export default function Header() {
   const pathname = usePathname();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const { hotelName } = useHotel();
+  const { user } = useContext(UserContext)!;
+
+
+useEffect(() => {
+  console.log('user', JSON.stringify(user, null, 2));
+}, [user]);
 
   useEffect(() => {
+  
     const isHomePage = pathname === '/';
     if (!isHomePage) {
       setIsSearchVisible(true);
@@ -71,3 +79,5 @@ export default function Header() {
     </header>
   );
 }
+
+

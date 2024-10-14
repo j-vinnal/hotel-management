@@ -124,7 +124,7 @@ export abstract class BaseEntityService<
     jwtData: IJWTResponse,
     retry: boolean = true
   ): Promise<IResultObject<TEntity>> {
-    console.log('entity', JSON.stringify(entity, null, 2));
+
 
     try {
       const response = await this.axios.put<TEntity>(`${id}`, entity, {
@@ -138,7 +138,7 @@ export abstract class BaseEntityService<
 
       return { errors: [`${response.status} ${response.statusText}`] };
     } catch (e: any) {
-      console.log('error', JSON.stringify(e, null, 2));
+  
       if (e.response?.status === 401 && retry) {
         const retryResult = await this.handle401Error(e, jwtData);
         if (retryResult === null) {

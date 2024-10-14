@@ -59,7 +59,7 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
   }, [id]);
 
   const onSubmit = async (data: IRoom) => {
-    console.log('date', JSON.stringify(data, null, 2));
+
     try {
       await editEntity(id as string, data);
       toast.success('Room updated successfully!');

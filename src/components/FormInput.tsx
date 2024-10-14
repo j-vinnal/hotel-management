@@ -1,6 +1,7 @@
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { convertToUTC } from '@/utils/convertToUTC';
 
 interface FormInputProps {
   id: string;
@@ -17,8 +18,9 @@ interface FormInputProps {
   selectedDate?: Date;
   onDateChange?: (date: Date | null) => void;
   onCheckedChange?: (checked: boolean) => void;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   showLabel?: boolean;
-  marginBottomClass?: string; // New prop for margin-bottom class
+  marginBottomClass?: string; 
 }
 
 const FormInput = ({
@@ -36,6 +38,7 @@ const FormInput = ({
   selectedDate,
   onDateChange,
   onCheckedChange,
+  onChange,
   showLabel = true,
   marginBottomClass = 'mb-3', 
 }: FormInputProps) => (
@@ -44,7 +47,13 @@ const FormInput = ({
       <label htmlFor={id}>{label}</label>
     )}
     {type === 'select' ? (
-      <select {...register} id={id} className="form-select" value={value}>
+      <select
+        {...register}
+        id={id}
+        className="form-select"
+        value={value}
+        onChange={onChange}
+      >
         {options?.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -73,6 +82,7 @@ const FormInput = ({
           dateFormat="dd-MM-yyyy"
           className="form-control"
           placeholderText={placeholder || label}
+          minDate={convertToUTC(new Date())}
         />
       </div>
     ) : (

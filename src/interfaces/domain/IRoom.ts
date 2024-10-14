@@ -20,7 +20,8 @@ export const roomSchema = z.object({
   bedCount: z
     .number()
     .int()
-    .min(1, { message: 'Bed count must be at least 1' }),
+    .min(1, { message: 'Bed count must be at least 1' })
+    .max(3, { message: 'Bed count must be at most 3' }),
   price: z.number().min(0, { message: 'Price must be a non-negative number' }),
   imageUrl: z.string().optional(),
   hotelId: z.string().uuid({ message: 'Invalid Hotel ID' }),

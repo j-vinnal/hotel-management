@@ -7,11 +7,14 @@ import { useContext, useEffect, useState } from 'react';
 import { FaBed, FaStar } from 'react-icons/fa';
 import Image from 'next/image';
 import defaultImage from '../../public/images/default-image.webp';
+import Link from 'next/link';
+import { JWTContext } from '@/states/contexts/JWTContext';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const HotelBookingPage = () => {
   const { rooms, loading, error, fetchRooms } = useContext(RoomContext)!;
   const { startDate, endDate, guestCount } = useContext(SearchContext)!;
-
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const messages = [
     'Affordable Modern Rooms',
@@ -20,6 +23,8 @@ const HotelBookingPage = () => {
   ];
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [ratings, setRatings] = useState<{ [key: string]: string }>({});
+  const { jwtResponse } = useContext(JWTContext)!;
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,6 +64,18 @@ const HotelBookingPage = () => {
     if (error) return;
     fetchRooms({ guestCount, startDate, endDate });
   }, [fetchRooms, error]);
+
+  const handleBookNow = (roomId: string) => {
+    if (!jwtResponse) {
+      router.push('/login');
+      return;
+    }
+    if (!startDate || !endDate) {
+      toast.error('Please select a check-in and check-out date.');
+      return;
+    }
+    router.push(`/booking/confirm/${roomId}`);
+  };
 
   return (
     <div className="font-montserrat min-vh-100">
@@ -134,7 +151,9 @@ const HotelBookingPage = () => {
                           <span>{ratings[room.id!]}</span>
                         </div>
                       </div>
-                      <button className="btn btn-primary mt-3 w-100">
+                      <button
+                        onClick={() => handleBookNow(room.id!)}
+                        className="btn btn-primary mt-3 w-100">
                         Book Now
                       </button>
                     </div>

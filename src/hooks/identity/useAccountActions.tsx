@@ -21,7 +21,7 @@ const useAccountActions = () => {
       const response = await identityService.login(account);
       handleResponseErrors(response);
       setJwtResponse(response.data);
-      router.push('/account');
+      router.push('/');
     } catch (error) {
       throw new Error((error as Error).message);
     }

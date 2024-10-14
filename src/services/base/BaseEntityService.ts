@@ -1,11 +1,13 @@
-import {IJWTResponse} from '@/interfaces/IJWTResponse';
-import {IResultObject} from '@/interfaces/auth/IResultObject';
-import {IBaseEntity} from '@/interfaces/domain/IBaseEntity';
-import {AxiosError} from 'axios';
-import {BaseService} from './BaseService';
+import { IJWTResponse } from '@/interfaces/IJWTResponse';
+import { IResultObject } from '@/interfaces/auth/IResultObject';
+import { IBaseEntity } from '@/interfaces/domain/IBaseEntity';
+import { AxiosError } from 'axios';
 import IdentityService from '../IdentityService';
+import { BaseService } from './BaseService';
 
-export abstract class BaseEntityService<TEntity extends IBaseEntity> extends BaseService {
+export abstract class BaseEntityService<
+  TEntity extends IBaseEntity,
+> extends BaseService {
   protected constructor(
     baseURL: string,
     protected setJwtResponse: (data: IJWTResponse | undefined) => void
@@ -13,7 +15,10 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     super(baseURL);
   }
 
-  protected async handle401Error(e: AxiosError, jwtData: IJWTResponse): Promise<IResultObject<any> | null> {
+  protected async handle401Error(
+    e: AxiosError,
+    jwtData: IJWTResponse
+  ): Promise<IResultObject<any> | null> {
     if (e.response?.status === 401) {
       const identityService = new IdentityService();
       const refreshedJwt = await identityService.refreshToken(jwtData);
@@ -23,13 +28,16 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
         this.setJwtResponse(refreshedJwt.data);
         return null;
       } else {
-        return {errors: ['Failed to refresh JWT. Please log in again.']};
+        return { errors: ['Failed to refresh JWT. Please log in again.'] };
       }
     }
     return null;
   }
 
-  async getRequest(jwtData: IJWTResponse, retry: boolean = true): Promise<IResultObject<TEntity[]>> {
+  async getRequest(
+    jwtData: IJWTResponse,
+    retry: boolean = true
+  ): Promise<IResultObject<TEntity[]>> {
     try {
       const response = await this.axios.get<TEntity[]>('', {
         headers: {
@@ -37,9 +45,9 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
         },
       });
       if (response.status < 300) {
-        return {data: response.data};
+        return { data: response.data };
       }
-      return {errors: [`${response.status} ${response.statusText}`]};
+      return { errors: [`${response.status} ${response.statusText}`] };
     } catch (e: any) {
       if (e.response?.status === 401 && retry) {
         const retryResult = await this.handle401Error(e, jwtData);
@@ -53,7 +61,11 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-  async getRequestById(id: string, jwtData: IJWTResponse, retry: boolean = true): Promise<IResultObject<TEntity>> {
+  async getRequestById(
+    id: string,
+    jwtData: IJWTResponse,
+    retry: boolean = true
+  ): Promise<IResultObject<TEntity>> {
     try {
       const response = await this.axios.get<TEntity>(`${id}`, {
         headers: {
@@ -77,7 +89,11 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-  async postRequest(entity: TEntity, jwtData: IJWTResponse, retry: boolean = true): Promise<IResultObject<TEntity>> {
+  async postRequest(
+    entity: TEntity,
+    jwtData: IJWTResponse,
+    retry: boolean = true
+  ): Promise<IResultObject<TEntity>> {
     try {
       const response = await this.axios.post<TEntity>('', entity, {
         headers: {
@@ -86,9 +102,9 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
       });
 
       if (response.status < 300) {
-        return {data: response.data};
+        return { data: response.data };
       }
-      return {errors: [`${response.status} ${response.statusText}`]};
+      return { errors: [`${response.status} ${response.statusText}`] };
     } catch (e: any) {
       if (e.response?.status === 401 && retry) {
         const retryResult = await this.handle401Error(e, jwtData);
@@ -102,7 +118,14 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-  async putRequest(id: string, entity: TEntity, jwtData: IJWTResponse, retry: boolean = true): Promise<IResultObject<TEntity>> {
+  async putRequest(
+    id: string,
+    entity: TEntity,
+    jwtData: IJWTResponse,
+    retry: boolean = true
+  ): Promise<IResultObject<TEntity>> {
+    console.log('entity', JSON.stringify(entity, null, 2));
+
     try {
       const response = await this.axios.put<TEntity>(`${id}`, entity, {
         headers: {
@@ -110,10 +133,12 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
         },
       });
       if (response.status < 300) {
-        return {data: response.data};
+        return { data: response.data };
       }
-      return {errors: [`${response.status} ${response.statusText}`]};
+
+      return { errors: [`${response.status} ${response.statusText}`] };
     } catch (e: any) {
+      console.log('error', JSON.stringify(e, null, 2));
       if (e.response?.status === 401 && retry) {
         const retryResult = await this.handle401Error(e, jwtData);
         if (retryResult === null) {
@@ -126,7 +151,11 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-  async deleteRequest(id: string, jwtData: IJWTResponse, retry: boolean = true): Promise<IResultObject<number>> {
+  async deleteRequest(
+    id: string,
+    jwtData: IJWTResponse,
+    retry: boolean = true
+  ): Promise<IResultObject<number>> {
     try {
       const response = await this.axios.delete(`${id}`, {
         headers: {
@@ -134,9 +163,9 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
         },
       });
       if (response.status < 300) {
-        return {data: response.data};
+        return { data: response.data };
       }
-      return {errors: [`${response.status} ${response.statusText}`]};
+      return { errors: [`${response.status} ${response.statusText}`] };
     } catch (e: any) {
       if (e.response?.status === 401 && retry) {
         const retryResult = await this.handle401Error(e, jwtData);

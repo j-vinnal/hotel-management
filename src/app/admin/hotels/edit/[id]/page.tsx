@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-
 const EditHotelPage = (params: { params: { id?: string } }) => {
   const router = useRouter();
   const id = params.params.id;
@@ -44,7 +43,6 @@ const EditHotelPage = (params: { params: { id?: string } }) => {
     const hotelData = await fetchEntityById(id as string);
     setHotel(hotelData);
     reset(hotelData);
-    
   };
 
   useEffect(() => {
@@ -113,19 +111,18 @@ const EditHotelPage = (params: { params: { id?: string } }) => {
               styleType="form-group"
             />
 
-            <div className="form-group mb-3">
+            <div className="form-group mb-3 d-flex align-items-center">
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary me-4"
                 disabled={isSubmitting}>
                 Save
               </button>
+              <div className="me-4">|</div>
+              <Link href="/admin">Back to List</Link>
             </div>
           </form>
         </div>
-      </div>
-      <div>
-        <Link href="/admin">Back to List</Link>
       </div>
     </AdminLayout>
   );

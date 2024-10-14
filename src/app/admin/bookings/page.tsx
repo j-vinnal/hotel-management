@@ -9,7 +9,7 @@ import { formatDate } from '@/utils/formatDate';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-const AdminPage = () => {
+const AdminBookingsPage = () => {
   const { entities: bookings, refetch: fetchEntity } =
     useEntityActions<IBooking>(BookingService);
 
@@ -67,4 +67,4 @@ const AdminPage = () => {
   );
 };
 
-export default withAdminAuth(AdminPage);
+export default withAdminAuth(AdminBookingsPage);

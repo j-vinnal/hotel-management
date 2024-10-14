@@ -2,21 +2,34 @@
 
 import withAuth from '@/components/hoc/withAuth';
 import MainLayout from '@/components/layouts/MainLayout';
+import { useContext } from 'react';
+import { UserContext } from '@/states/contexts/UserContext';
 
-const AccountPage = () => {
+const AccountDetailsPage = () => {
+  const { user } = useContext(UserContext)!;
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <MainLayout>
       <h2>Account Details</h2>
-      <div className="pt-4">
-        <div className="d-flex justify-content-between align-items-center pb-4">
-          <p className="fw-medium text-dark" style={{ fontSize: '22px' }}>
-            Upcoming bookings
-          </p>
-          <button className="btn btn-dark text-light mt-3 mt-md-0">
-            Can't find your booking?
-          </button>
-        </div>
-      </div>
+      <hr />
+
+      <dl className="row">
+        <dt className="col-sm-2">First Name</dt>
+        <dd className="col-sm-10">{user.firstName}</dd>
+        <dt className="col-sm-2">Last Name</dt>
+        <dd className="col-sm-10">{user.lastName}</dd>
+        <dt className="col-sm-2">Email</dt>
+        <dd className="col-sm-10">{user.email}</dd>
+        <dt className="col-sm-2">Role</dt>
+        <dd className="col-sm-10">{user.role}</dd>
+        <dt className="col-sm-2">Personal Code</dt>
+        <dd className="col-sm-10">{user.personalCode}</dd>
+      </dl>
+
       <div className="py-4">
         <p className="mb-4 fw-medium text-dark" style={{ fontSize: '22px' }}>
           For support or account deletion
@@ -34,4 +47,4 @@ const AccountPage = () => {
   );
 };
 
-export default withAuth(AccountPage);
+export default withAuth(AccountDetailsPage);

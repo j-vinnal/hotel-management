@@ -2,47 +2,85 @@
 
 import withAuth from '@/components/hoc/withAuth';
 import MainLayout from '@/components/layouts/MainLayout';
+import { IBooking } from '@/interfaces/domain/IBooking';
+import BookingService from '@/services/BookingService';
+import { useContext, useEffect, useState } from 'react';
 
-const AccountPage = () => {
+import { JWTContext } from '@/states/contexts/JWTContext';
+import { formatDate } from '@/utils/formatDate';
+import Link from 'next/link';
+import { CancellationDaysLimit } from '@/utils/BookingConstants';
+
+const MyBookingsPage = () => {
+  const [bookings, setBookings] = useState<IBooking[]>([]);
+  const { jwtResponse, setJwtResponse } = useContext(JWTContext)!;
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      if (jwtResponse) {
+        const bookingService = new BookingService(setJwtResponse);
+        const result = await bookingService.getBookings(jwtResponse, false);
+        if (result.data) {
+          setBookings(result.data);
+        }
+      }
+    };
+
+    fetchBookings();
+  }, [jwtResponse]);
+
   return (
     <MainLayout>
-      <h2>Upcoming bookings</h2>
+      <h2>My bookings</h2>
       <div className="pt-4">
         <table className="table">
           <thead>
             <tr>
-              <th>RoomNumber</th>
-              <th>QuestFirstName</th>
-              <th>QuestLastName</th>
-
-              <th>StartDate</th>
-              <th>EndDate</th>
-              <th>IsCancelled</th>
-
-              <th></th>
+              <th>Room Number</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Is Cancelled</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>105</td>
-              <td>J&#xFC;ri</td>
-              <td>Vinnal</td>
-              <td>12.10.2024 15:58:00</td>
-              <td>13.10.2024 15:58:00</td>
-              <td>
-                <input className="check-box" disabled checked type="checkbox" />
-              </td>
+            {bookings.map((booking) => {
+              const startDate = new Date(booking.startDate);
+              const currentDate = new Date();
+              const threeDaysAgo = new Date();
+              threeDaysAgo.setDate(currentDate.getDate() - CancellationDaysLimit);
 
-              <td>
-                <a href="/Bookings/Edit/bb28d136-5388-4079-bde3-ff55bae623d5">
-                  Edit
-                </a>
-                |
-                <a href="/Bookings/Details/bb28d136-5388-4079-bde3-ff55bae623d5">
-                  Details
-                </a>
-              </td>
-            </tr>
+              return (
+                <tr key={booking.id}>
+                  <td>{booking.roomNumber}</td>
+                  <td>{booking.questFirstName}</td>
+                  <td>{booking.questLastName}</td>
+                  <td>{formatDate(booking.startDate)}</td>
+                  <td>{formatDate(booking.endDate)}</td>
+                  <td>
+                    <input
+                      className="check-box"
+                      disabled
+                      checked={booking.isCancelled}
+                      type="checkbox"
+                    />
+                  </td>
+                  <td>
+                    <Link href={`account/booking/details/${booking.id}`}>Details</Link>
+                    {startDate > threeDaysAgo && !booking.isCancelled && (
+                      <>
+                        {' '}|{' '}
+                        <Link href={`account/booking/cancel/${booking.id}`}>
+                          Cancel booking
+                        </Link>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -50,4 +88,4 @@ const AccountPage = () => {
   );
 };
 
-export default withAuth(AccountPage);
+export default withAuth(MyBookingsPage);

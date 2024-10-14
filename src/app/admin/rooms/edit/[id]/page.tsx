@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { json } from 'stream/consumers';
 
 const EditRoomPage = (params: { params: { id?: string } }) => {
   const router = useRouter();
@@ -58,6 +59,7 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
   }, [id]);
 
   const onSubmit = async (data: IRoom) => {
+    console.log('date', JSON.stringify(data, null, 2));
     try {
       await editEntity(id as string, data);
       toast.success('Room updated successfully!');
@@ -96,7 +98,7 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
               id="roomNumber"
               label="Room Number"
               type="number"
-              register={register('roomNumber')}
+              register={register('roomNumber', { valueAsNumber: true })}
               error={errors.roomNumber}
               styleType="form-group"
             />
@@ -105,7 +107,7 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
               id="bedCount"
               label="Bed Count"
               type="number"
-              register={register('bedCount')}
+              register={register('bedCount', { valueAsNumber: true })}
               error={errors.bedCount}
               styleType="form-group"
             />
@@ -114,7 +116,7 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
               id="price"
               label="Price"
               type="number"
-              register={register('price')}
+              register={register('price', { valueAsNumber: true })}
               error={errors.price}
               styleType="form-group"
             />
@@ -143,20 +145,18 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
                 }))}
             />
 
-            <div className="form-group mb-3">
+            <div className="form-group mb-3 d-flex align-items-center">
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary me-4"
                 disabled={isSubmitting}>
                 Save
               </button>
+              <div className="me-4">|</div>
+              <Link href="/admin/rooms">Back to List</Link>
             </div>
           </form>
         </div>
-      </div>
-
-      <div>
-        <Link href="/admin/rooms">Back to List</Link>
       </div>
     </AdminLayout>
   );

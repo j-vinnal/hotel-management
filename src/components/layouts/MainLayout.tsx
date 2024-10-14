@@ -24,12 +24,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           <Link
             href="/account"
             className={`text-left nav-link ${pathname === '/account' ? 'text-bold' : ''} hover-bold mb-3`}>
-            Upcoming bookings
-          </Link>
-          <Link
-            href="/account/previous-bookings"
-            className={`text-left nav-link ${pathname === '/account/previous-bookings' ? 'text-bold' : ''} hover-bold mb-3`}>
-            Previous bookings
+            My bookings
           </Link>
           <Link
             href="/account/details"

@@ -185,20 +185,18 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
               styleType="form-group"
             />
 
-            <div className="form-group mb-3">
+            <div className="form-group mb-3 d-flex align-items-center">
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary me-4"
                 disabled={isSubmitting}>
                 Save
               </button>
+              <div className="me-4">|</div>
+              <Link href="/admin/bookings">Back to List</Link>
             </div>
           </form>
         </div>
-      </div>
-
-      <div>
-        <Link href="/admin/bookings">Back to List</Link>
       </div>
     </AdminLayout>
   );

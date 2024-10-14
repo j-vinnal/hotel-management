@@ -102,6 +102,7 @@ const SearchBar = () => {
           { value: '2', label: 'Guests: 2' },
           { value: '3', label: 'Guests: 3' },
         ]}
+        onChange={(e) => setGuestCount(Number(e.target.value))}
         styleType="form-group"
         showLabel={false}
         marginBottomClass="mb-0"

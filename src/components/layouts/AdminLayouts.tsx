@@ -19,12 +19,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           style={{ fontSize: '22px', color: '#763250' }}>
           <Link
             href="/admin"
-            className={`text-left nav-link ${pathname === '/admin' ? 'text-bold' : ''} hover-bold mb-3`}>
+            className={`text-left nav-link ${pathname === '/admin' || pathname.includes('/admin/hotels') ? 'text-bold' : ''} hover-bold mb-3`}>
             Manage hotel
           </Link>
           <Link
             href="/admin/rooms"
-            className={`text-left nav-link ${pathname === '/admin/rooms' ? 'text-bold' : ''} hover-bold mb-3`}>
+            className={`text-left nav-link ${pathname.includes('/admin/rooms') ? 'text-bold' : ''} hover-bold mb-3`}>
             Manage rooms
           </Link>
           <Link

@@ -3,6 +3,7 @@ import { IRoom } from '@/interfaces/domain/IRoom';
 import { IJWTResponse } from '@/interfaces/IJWTResponse';
 import { IRoomAvailabilityRequest } from '@/interfaces/IRoomAvailabilityRequest';
 import { BaseEntityService } from './base/BaseEntityService';
+import { convertToUTC } from '@/utils/convertToUTC';
 
 export default class RoomService extends BaseEntityService<IRoom> {
   //takes setJwtResponse method as parameter
@@ -16,25 +17,14 @@ export default class RoomService extends BaseEntityService<IRoom> {
     );
   }
 
-  private convertToUTC(date?: Date | string): Date | undefined {
-    if (!date) return undefined;
-    const parsedDate = typeof date === 'string' ? new Date(date) : date;
-    return new Date(
-      Date.UTC(
-        parsedDate.getFullYear(),
-        parsedDate.getMonth(),
-        parsedDate.getDate()
-      )
-    );
-  }
 
   async getAvailableRooms(
     request: IRoomAvailabilityRequest
   ): Promise<IResultObject<IRoom[]>> {
     const utcRequest = {
       ...request,
-      startDate: this.convertToUTC(request.startDate),
-      endDate: this.convertToUTC(request.endDate),
+      startDate: convertToUTC(request.startDate),
+      endDate: convertToUTC(request.endDate),
     };
 
     try {
@@ -46,6 +36,7 @@ export default class RoomService extends BaseEntityService<IRoom> {
       return this.handleError(e);
     }
   }
+
 
   // Additional methods
 }

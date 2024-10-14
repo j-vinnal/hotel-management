@@ -32,6 +32,21 @@ The project is organized into several key directories and files:
 - **JWT Authentication**: The application uses JWT for secure authentication. The `BaseEntityService` class handles token refresh logic to maintain user sessions.
 
 
+## Seeded Users
+
+The application comes with pre-configured users for testing purposes:
+
+- **Admin User**
+  - **UserName**: `admin@hotelx.com`
+  - **Password**: `Foo.Bar1`
+
+- **Guest User**
+  - **UserName**: `guest@hotelx.com`
+  - **Password**: `Guest.Pass1`
+
+When registering a new user through the application, the user will be created with regular user privileges.
+
+
 ## Getting Started
 
 To get started with the project, follow these steps:

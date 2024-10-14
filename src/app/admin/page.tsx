@@ -18,7 +18,7 @@ const AdminHotelPage = () => {
 
   return (
     <AdminLayout>
-      <h2>Manage hotel See on see leht</h2>
+      <h2>Manage hotel</h2>
       <div className="pt-4">
         <table className="table">
           <thead>

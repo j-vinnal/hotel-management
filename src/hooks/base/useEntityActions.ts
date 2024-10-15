@@ -19,8 +19,6 @@ const useEntityActions = <T extends IBaseEntity>(
     setLoading(true);
     setError(null);
     const service = new ServiceClass(setJwtResponse);
-
- 
     try {
       checkJwtAndHandleError(jwtResponse);
       const response = await service.postRequest(entity, jwtResponse!);

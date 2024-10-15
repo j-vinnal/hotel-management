@@ -62,8 +62,6 @@ export default class BookingService extends BaseEntityService<IBooking> {
         }
       );
 
-  
-
       if (response.status < 300) {
         return { data: undefined };
       }

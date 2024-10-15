@@ -21,7 +21,8 @@ import { toast } from 'react-toastify';
 const ConfirmBookingPage = (params: { params: { id?: string } }) => {
   const router = useRouter();
   const roomId = params.params.id;
-  const { fetchEntityById } = useEntityActions<IRoom>(RoomService);
+  const { fetchEntityById, loading, error } =
+    useEntityActions<IRoom>(RoomService);
   const { addEntity } = useEntityActions<IBooking>(BookingService);
   const { jwtResponse } = useContext(JWTContext)!;
   const { user } = useContext(UserContext)!;
@@ -62,43 +63,45 @@ const ConfirmBookingPage = (params: { params: { id?: string } }) => {
     }
   };
 
-  if (!room) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <MainLayout>
       <h1>Confirm Booking</h1>
 
       <h4>Room Details</h4>
       <hr />
-      <dl className="row">
-        <dt className="col-sm-2">Check-in date</dt>
-        <dd className="col-sm-10">{formatDate(startDate)}</dd>
-        <dt className="col-sm-2">Check-out date</dt>
-        <dd className="col-sm-10">{formatDate(endDate)}</dd>
-        <dt className="col-sm-2">Guest Count</dt>
-        <dd className="col-sm-10">{guestCount}</dd>
-        <dt className="col-sm-2">Room Name</dt>
-        <dd className="col-sm-10">{room.roomName}</dd>
-        <dt className="col-sm-2">Room Number</dt>
-        <dd className="col-sm-10">{room.roomNumber}</dd>
-        <dt className="col-sm-2">Bed Count</dt>
-        <dd className="col-sm-10">{room.bedCount}</dd>
-        <dt className="col-sm-2">Price</dt>
-        <dd className="col-sm-10">{room.price}</dd>
-      </dl>
+      {loading && <p>Loading room details...</p>}
+      {error && <p className="text-danger">Error: {error}</p>}
+      {room && (
+        <>
+          <dl className="row">
+            <dt className="col-sm-2">Check-in date</dt>
+            <dd className="col-sm-10">{formatDate(startDate)}</dd>
+            <dt className="col-sm-2">Check-out date</dt>
+            <dd className="col-sm-10">{formatDate(endDate)}</dd>
+            <dt className="col-sm-2">Guest Count</dt>
+            <dd className="col-sm-10">{guestCount}</dd>
+            <dt className="col-sm-2">Room Name</dt>
+            <dd className="col-sm-10">{room.roomName}</dd>
+            <dt className="col-sm-2">Room Number</dt>
+            <dd className="col-sm-10">{room.roomNumber}</dd>
+            <dt className="col-sm-2">Bed Count</dt>
+            <dd className="col-sm-10">{room.bedCount}</dd>
+            <dt className="col-sm-2">Price</dt>
+            <dd className="col-sm-10">{room.price}</dd>
+          </dl>
 
-      <div className="d-flex align-items-center">
-        <button
-          type="button"
-          onClick={onConfirm}
-          className="btn btn-primary me-4">
-          Confirm Booking
-        </button>
-        <div className="me-4">|</div>
-        <Link href="/">Back to search</Link>
-      </div>
+          <div className="d-flex align-items-center">
+            <button
+              type="button"
+              onClick={onConfirm}
+              className="btn btn-primary me-4">
+              Confirm Booking
+            </button>
+            <div className="me-4">|</div>
+            <Link href="/">Back to search</Link>
+          </div>
+        </>
+      )}
     </MainLayout>
   );
 };

@@ -13,7 +13,8 @@ import { toast } from 'react-toastify';
 const DeleteRoomPage = (params: { params: { id?: string } }) => {
   const router = useRouter();
   const id = params.params.id;
-  const { fetchEntityById, deleteEntity } = useEntityActions<IRoom>(RoomService);
+  const { fetchEntityById, deleteEntity, loading, error } =
+    useEntityActions<IRoom>(RoomService);
   const [room, setRoom] = useState<IRoom | null>(null);
 
   const fetchRoom = async () => {
@@ -37,10 +38,6 @@ const DeleteRoomPage = (params: { params: { id?: string } }) => {
     }
   };
 
-  if (!room) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <AdminLayout>
       <h1>Delete</h1>
@@ -49,31 +46,39 @@ const DeleteRoomPage = (params: { params: { id?: string } }) => {
 
       <h4>Room</h4>
       <hr />
-      <dl className="row">
-        <dt className="col-sm-2">Room Name</dt>
-        <dd className="col-sm-10">{room.roomName}</dd>
-        <dt className="col-sm-2">Room Number</dt>
-        <dd className="col-sm-10">{room.roomNumber}</dd>
-        <dt className="col-sm-2">Bed Count</dt>
-        <dd className="col-sm-10">{room.bedCount}</dd>
-        <dt className="col-sm-2">Price</dt>
-        <dd className="col-sm-10">{room.price}</dd>
-        <dt className="col-sm-2">Image URL</dt>
-        <dd className="col-sm-10">{room.imageUrl ?? 'No Image'}</dd>
-        <dt className="col-sm-2">Hotel ID</dt>
-        <dd className="col-sm-10">{room.hotelId}</dd>
-      </dl>
+      {loading && <p>Loading room...</p>}
+      {error && <p className="text-danger">Error: {error}</p>}
+      {room && (
+        <>
+          <dl className="row">
+            <dt className="col-sm-2">Room Name</dt>
+            <dd className="col-sm-10">{room.roomName}</dd>
+            <dt className="col-sm-2">Room Number</dt>
+            <dd className="col-sm-10">{room.roomNumber}</dd>
+            <dt className="col-sm-2">Bed Count</dt>
+            <dd className="col-sm-10">{room.bedCount}</dd>
+            <dt className="col-sm-2">Price</dt>
+            <dd className="col-sm-10">{room.price}</dd>
+            <dt className="col-sm-2">Image URL</dt>
+            <dd className="col-sm-10">{room.imageUrl ?? 'No Image'}</dd>
+            <dt className="col-sm-2">Hotel ID</dt>
+            <dd className="col-sm-10">{room.hotelId}</dd>
+          </dl>
 
-      <div className="d-flex align-items-center">
-        <button
-          type="button"
-          onClick={() => room.id && onSubmit(room.id)}
-          className="btn btn-danger me-4">
-          Delete
-        </button>
-        <div className="me-4">|</div>
-        <Link href="/admin/rooms">Back to List</Link>
-      </div>
+          <div className="d-flex align-items-center">
+            <button
+              type="button"
+              onClick={() => room.id && onSubmit(room.id)}
+              className="btn btn-danger me-4"
+              disabled={loading}>
+              Delete
+            </button>
+
+            <div className="me-4">|</div>
+            <Link href="/admin/rooms">Back to List</Link>
+          </div>
+        </>
+      )}
     </AdminLayout>
   );
 };

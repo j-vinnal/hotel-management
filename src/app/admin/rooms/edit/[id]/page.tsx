@@ -14,12 +14,12 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { json } from 'stream/consumers';
 
 const EditRoomPage = (params: { params: { id?: string } }) => {
   const router = useRouter();
   const id = params.params.id;
-  const { fetchEntityById, editEntity } = useEntityActions<IRoom>(RoomService);
+  const { fetchEntityById, editEntity, loading, error } =
+    useEntityActions<IRoom>(RoomService);
   const [room, setRoom] = useState<IRoom | null>(null);
   const { refetch: fetchHotels, entities: hotels } =
     useEntityActions<IHotel>(HotelService);
@@ -59,7 +59,6 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
   }, [id]);
 
   const onSubmit = async (data: IRoom) => {
-
     try {
       await editEntity(id as string, data);
       toast.success('Room updated successfully!');
@@ -79,85 +78,89 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
       <h1>Edit</h1>
       <h4>Room</h4>
       <hr />
-      <div className="row">
-        {errors.root && (
-          <span className="text-danger">{errors.root.message}</span>
-        )}
-        <div className="col-md-4">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormInput
-              id="roomName"
-              label="Room Name"
-              type="text"
-              register={register('roomName')}
-              error={errors.roomName}
-              styleType="form-group"
-            />
+      {loading && <p>Loading room...</p>}
+      {error && <p className="text-danger">Error: {error}</p>}
+      {room && (
+        <div className="row">
+          {errors.root && (
+            <span className="text-danger">{errors.root.message}</span>
+          )}
+          <div className="col-md-4">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormInput
+                id="roomName"
+                label="Room Name"
+                type="text"
+                register={register('roomName')}
+                error={errors.roomName}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="roomNumber"
-              label="Room Number"
-              type="number"
-              register={register('roomNumber', { valueAsNumber: true })}
-              error={errors.roomNumber}
-              styleType="form-group"
-            />
+              <FormInput
+                id="roomNumber"
+                label="Room Number"
+                type="number"
+                register={register('roomNumber', { valueAsNumber: true })}
+                error={errors.roomNumber}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="bedCount"
-              label="Bed Count"
-              type="number"
-              register={register('bedCount', { valueAsNumber: true })}
-              error={errors.bedCount}
-              styleType="form-group"
-            />
+              <FormInput
+                id="bedCount"
+                label="Bed Count"
+                type="number"
+                register={register('bedCount', { valueAsNumber: true })}
+                error={errors.bedCount}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="price"
-              label="Price"
-              type="number"
-              register={register('price', { valueAsNumber: true })}
-              error={errors.price}
-              styleType="form-group"
-            />
+              <FormInput
+                id="price"
+                label="Price"
+                type="number"
+                register={register('price', { valueAsNumber: true })}
+                error={errors.price}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="imageUrl"
-              label="Image URL"
-              type="text"
-              register={register('imageUrl')}
-              error={errors.imageUrl}
-              styleType="form-group"
-            />
+              <FormInput
+                id="imageUrl"
+                label="Image URL"
+                type="text"
+                register={register('imageUrl')}
+                error={errors.imageUrl}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="hotelId"
-              label="Hotel"
-              type="select"
-              register={register('hotelId')}
-              error={errors.hotelId}
-              styleType="form-group"
-              options={hotels
-                .filter((hotel) => hotel.id !== undefined)
-                .map((hotel) => ({
-                  value: hotel.id as string,
-                  label: hotel.name,
-                }))}
-            />
+              <FormInput
+                id="hotelId"
+                label="Hotel"
+                type="select"
+                register={register('hotelId')}
+                error={errors.hotelId}
+                styleType="form-group"
+                options={hotels
+                  .filter((hotel) => hotel.id !== undefined)
+                  .map((hotel) => ({
+                    value: hotel.id as string,
+                    label: hotel.name,
+                  }))}
+              />
 
-            <div className="form-group mb-3 d-flex align-items-center">
-              <button
-                type="submit"
-                className="btn btn-primary me-4"
-                disabled={isSubmitting}>
-                Save
-              </button>
-              <div className="me-4">|</div>
-              <Link href="/admin/rooms">Back to List</Link>
-            </div>
-          </form>
+              <div className="form-group mb-3 d-flex align-items-center">
+                <button
+                  type="submit"
+                  className="btn btn-primary me-4"
+                  disabled={isSubmitting}>
+                  Save
+                </button>
+                <div className="me-4">|</div>
+                <Link href="/admin/rooms">Back to List</Link>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </AdminLayout>
   );
 };

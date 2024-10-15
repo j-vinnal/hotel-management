@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 const EditHotelPage = (params: { params: { id?: string } }) => {
   const router = useRouter();
   const id = params.params.id;
-  const { fetchEntityById, editEntity } =
+  const { fetchEntityById, editEntity, loading, error } =
     useEntityActions<IHotel>(HotelService);
   const [hotel, setHotel] = useState<IHotel | null>(null);
   const { setHotelName } = useHotel();
@@ -63,67 +63,67 @@ const EditHotelPage = (params: { params: { id?: string } }) => {
     }
   };
 
-  if (!hotel) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <AdminLayout>
       <h1>Edit</h1>
       <h4>Hotel</h4>
       <hr />
-      <div className="row">
-        {errors.root && (
-          <span className="text-danger">{errors.root.message}</span>
-        )}
-        <div className="col-md-4">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormInput
-              id="name"
-              label="Name"
-              type="text"
-              register={register('name')}
-              error={errors.name}
-              styleType="form-group"
-            />
-            <FormInput
-              id="address"
-              label="Address"
-              type="text"
-              register={register('address')}
-              error={errors.address}
-              styleType="form-group"
-            />
-            <FormInput
-              id="phoneNumber"
-              label="Phone Number"
-              type="text"
-              register={register('phoneNumber')}
-              error={errors.phoneNumber}
-              styleType="form-group"
-            />
-            <FormInput
-              id="email"
-              label="Email"
-              type="email"
-              register={register('email')}
-              error={errors.email}
-              styleType="form-group"
-            />
+      {loading && <p>Loading hotel...</p>}
+      {error && <p className="text-danger">Error: {error}</p>}
+      {hotel && (
+        <div className="row">
+          {errors.root && (
+            <span className="text-danger">{errors.root.message}</span>
+          )}
+          <div className="col-md-4">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormInput
+                id="name"
+                label="Name"
+                type="text"
+                register={register('name')}
+                error={errors.name}
+                styleType="form-group"
+              />
+              <FormInput
+                id="address"
+                label="Address"
+                type="text"
+                register={register('address')}
+                error={errors.address}
+                styleType="form-group"
+              />
+              <FormInput
+                id="phoneNumber"
+                label="Phone Number"
+                type="text"
+                register={register('phoneNumber')}
+                error={errors.phoneNumber}
+                styleType="form-group"
+              />
+              <FormInput
+                id="email"
+                label="Email"
+                type="email"
+                register={register('email')}
+                error={errors.email}
+                styleType="form-group"
+              />
 
-            <div className="form-group mb-3 d-flex align-items-center">
-              <button
-                type="submit"
-                className="btn btn-primary me-4"
-                disabled={isSubmitting}>
-                Save
-              </button>
-              <div className="me-4">|</div>
-              <Link href="/admin">Back to List</Link>
-            </div>
-          </form>
+              <div className="form-group mb-3 d-flex align-items-center">
+                <button
+                  type="submit"
+                  className="btn btn-primary me-4"
+                  disabled={isSubmitting}>
+                  Save
+                </button>
+                <div className="me-4">|</div>
+                <Link href="/admin">Back to List</Link>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </AdminLayout>
   );
 };

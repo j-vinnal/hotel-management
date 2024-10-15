@@ -21,7 +21,7 @@ import { toast } from 'react-toastify';
 const EditBookingPage = (params: { params: { id?: string } }) => {
   const router = useRouter();
   const id = params.params.id;
-  const { fetchEntityById, editEntity } =
+  const { fetchEntityById, editEntity, loading, error } =
     useEntityActions<IBooking>(BookingService);
   const { rooms, fetchRooms } = useContext(RoomContext)!;
   const { entities: clients, refetch: fetchClients } =
@@ -89,115 +89,115 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
     }
   };
 
-  if (!booking) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <AdminLayout>
       <h1>Edit</h1>
       <h4>Booking</h4>
       <hr />
-      <div className="row">
-        {errors.root && (
-          <span className="text-danger">{errors.root.message}</span>
-        )}
-        <div className="col-md-4">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormInput
-              id="roomId"
-              label="Room"
-              type="select"
-              register={register('roomId')}
-              error={errors.roomId}
-              options={rooms
-                .filter((room) => room.id !== undefined)
-                .map((room) => ({
-                  value: room.id as string,
-                  label: `${room.roomName} - ${room.roomNumber}`,
-                }))}
-              styleType="form-group"
-            />
+      {loading && <p>Loading booking...</p>}
+      {error && <p className="text-danger">Error: {error}</p>}
+      {booking && (
+        <div className="row">
+          {errors.root && (
+            <span className="text-danger">{errors.root.message}</span>
+          )}
+          <div className="col-md-4">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormInput
+                id="roomId"
+                label="Room"
+                type="select"
+                register={register('roomId')}
+                error={errors.roomId}
+                options={rooms
+                  .filter((room) => room.id !== undefined)
+                  .map((room) => ({
+                    value: room.id as string,
+                    label: `${room.roomName} - ${room.roomNumber}`,
+                  }))}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="questId"
-              label="Client"
-              type="select"
-              register={register('questId')}
-              error={errors.questId}
-              options={clients
-                .filter((client) => client.id !== undefined)
-                .map((client) => ({
-                  value: client.id as string,
-                  label: `${client.firstName} ${client.lastName}`,
-                }))}
-              styleType="form-group"
-            />
+              <FormInput
+                id="questId"
+                label="Client"
+                type="select"
+                register={register('questId')}
+                error={errors.questId}
+                options={clients
+                  .filter((client) => client.id !== undefined)
+                  .map((client) => ({
+                    value: client.id as string,
+                    label: `${client.firstName} ${client.lastName}`,
+                  }))}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="startDate"
-              label="Check-in date"
-              type="date"
-              register={register('startDate')}
-              error={errors.startDate}
-              selectedDate={new Date(booking.startDate)}
-              onDateChange={(date) => {
-                setValue('startDate', date!);
-                setBooking((prev) => ({
-                  ...prev!,
-                  startDate: date!,
-                }));
-              }}
-              styleType="form-group"
-            />
+              <FormInput
+                id="startDate"
+                label="Check-in date"
+                type="date"
+                register={register('startDate')}
+                error={errors.startDate}
+                selectedDate={new Date(booking.startDate)}
+                onDateChange={(date) => {
+                  setValue('startDate', date!);
+                  setBooking((prev) => ({
+                    ...prev!,
+                    startDate: date!,
+                  }));
+                }}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="endDate"
-              label="Check-out date"
-              type="date"
-              register={register('endDate')}
-              error={errors.endDate}
-              selectedDate={new Date(booking.endDate)}
-              onDateChange={(date) => {
-                setValue('endDate', date!);
-                setBooking((prev) => ({
-                  ...prev!,
-                  endDate: date!,
-                }));
-              }}
-              styleType="form-group"
-            />
+              <FormInput
+                id="endDate"
+                label="Check-out date"
+                type="date"
+                register={register('endDate')}
+                error={errors.endDate}
+                selectedDate={new Date(booking.endDate)}
+                onDateChange={(date) => {
+                  setValue('endDate', date!);
+                  setBooking((prev) => ({
+                    ...prev!,
+                    endDate: date!,
+                  }));
+                }}
+                styleType="form-group"
+              />
 
-            <FormInput
-              id="isCancelled"
-              label="Cancelled"
-              type="checkbox"
-              register={register('isCancelled')}
-              error={errors.isCancelled}
-              checked={booking.isCancelled}
-              onCheckedChange={(checked) => {
-                setValue('isCancelled', checked);
-                setBooking((prev) => ({
-                  ...prev!,
-                  isCancelled: checked,
-                }));
-              }}
-              styleType="form-group"
-            />
+              <FormInput
+                id="isCancelled"
+                label="Cancelled"
+                type="checkbox"
+                register={register('isCancelled')}
+                error={errors.isCancelled}
+                checked={booking.isCancelled}
+                onCheckedChange={(checked) => {
+                  setValue('isCancelled', checked);
+                  setBooking((prev) => ({
+                    ...prev!,
+                    isCancelled: checked,
+                  }));
+                }}
+                styleType="form-group"
+              />
 
-            <div className="form-group mb-3 d-flex align-items-center">
-              <button
-                type="submit"
-                className="btn btn-primary me-4"
-                disabled={isSubmitting}>
-                Save
-              </button>
-              <div className="me-4">|</div>
-              <Link href="/admin/bookings">Back to List</Link>
-            </div>
-          </form>
+              <div className="form-group mb-3 d-flex align-items-center">
+                <button
+                  type="submit"
+                  className="btn btn-primary me-4"
+                  disabled={isSubmitting}>
+                  Save
+                </button>
+                <div className="me-4">|</div>
+                <Link href="/admin/bookings">Back to List</Link>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </AdminLayout>
   );
 };

@@ -1,16 +1,16 @@
 'use client';
 
 import SearchBar from '@/components/SearchBar';
+import { JWTContext } from '@/states/contexts/JWTContext';
 import { RoomContext } from '@/states/contexts/RoomContext';
 import { SearchContext } from '@/states/contexts/SearchContext';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 import { FaBed, FaStar } from 'react-icons/fa';
-import Image from 'next/image';
-import defaultImage from '../../public/images/default-image.webp';
-import Link from 'next/link';
-import { JWTContext } from '@/states/contexts/JWTContext';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import defaultImage from '../../public/images/default-image.webp';
+import hotelImage from '../../public/images/Hotel.avif';
 
 const HotelBookingPage = () => {
   const { rooms, loading, error, fetchRooms } = useContext(RoomContext)!;
@@ -42,6 +42,7 @@ const HotelBookingPage = () => {
     };
   }, []);
 
+  // Change the message every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
@@ -50,6 +51,7 @@ const HotelBookingPage = () => {
     return () => clearInterval(interval);
   }, [messages.length]);
 
+  // Set the random ratings for the rooms
   useEffect(() => {
     if (rooms.length > 0) {
       const initialRatings: { [key: string]: string } = {};
@@ -78,14 +80,22 @@ const HotelBookingPage = () => {
   };
 
   return (
-    <div className="font-montserrat min-vh-100">
+    <div className="min-vh-100">
       <main>
-        <section className="hero position-relative">
-          <img
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-            alt="Hotel exterior"
-            className="img-fluid w-100"
-            style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+        <section className="position-relative">
+          <Image
+            src={hotelImage.src}
+            alt="Hotel X"
+            width={0}
+            height={0}
+            sizes="100vw"
+            priority
+            style={{
+              minHeight: '270px',
+              width: '100%',
+              height: '400px',
+              objectFit: 'cover',
+            }}
           />
 
           <div
@@ -101,7 +111,7 @@ const HotelBookingPage = () => {
 
             <div
               className="d-flex justify-content-center mx-auto"
-              style={{  width: 'fit-content' }}>
+              style={{ width: 'fit-content' }}>
               <SearchBar />
             </div>
           </div>
@@ -120,7 +130,6 @@ const HotelBookingPage = () => {
                       height: '400px',
                       transition: 'transform 0.3s ease',
                     }}>
-
                     <Image
                       src={room.imageUrl || defaultImage.src}
                       className="card-img-top"
@@ -128,19 +137,27 @@ const HotelBookingPage = () => {
                       width={0}
                       height={0}
                       sizes="100vw"
-                      style={{minHeight:'270px', width: '100%', height: 'auto', objectFit: 'cover' }}
+                      priority
+                      style={{
+                        minHeight: '270px',
+                        width: '100%',
+                        height: 'auto',
+                        objectFit: 'cover',
+                      }}
                     />
 
                     <div className="card-body">
                       <h5 className="card-title">{room.roomName}</h5>
-                      <p className="card-text mb-4" style={{ fontSize: '0.9em' }}>
+                      <p
+                        className="card-text mb-4"
+                        style={{ fontSize: '0.9em' }}>
                         Room {room.roomNumber}
                       </p>
                       <p className="card-text">
                         <FaBed className="text-secondary me-2" />
                         {room.bedCount} bed{room.bedCount > 1 ? 's' : ''}
                       </p>
-                    
+
                       <div className="d-flex justify-content-between align-items-center">
                         <span className="h4">
                           ${room.price}

@@ -33,8 +33,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             Manage bookings
           </Link>
 
-          <hr className='mb-3'/>
-          <Link href="/account" className={'text-left nav-link hover-bold mb-3'}>
+          <hr className="mb-3" />
+          <Link
+            href="/account"
+            className={'text-left nav-link hover-bold mb-3'}>
             My account
           </Link>
 

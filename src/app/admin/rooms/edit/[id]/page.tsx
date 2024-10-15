@@ -69,10 +69,6 @@ const EditRoomPage = (params: { params: { id?: string } }) => {
     }
   };
 
-  if (!room) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <AdminLayout>
       <h1>Edit</h1>

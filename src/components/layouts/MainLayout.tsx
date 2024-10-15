@@ -23,12 +23,12 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           style={{ fontSize: '22px', color: '#763250', backgroundColor: '#fff0f6' }}>
           <Link
             href="/account"
-            className={`text-left nav-link ${pathname === '/account' ? 'text-bold' : ''} hover-bold mb-3`}>
+            className={`text-left nav-link ${pathname.includes('/account') ? 'text-bold' : ''} hover-bold mb-3`}>
             My bookings
           </Link>
           <Link
             href="/account/details"
-            className={`text-left nav-link ${pathname === '/account/details' ? 'text-bold' : ''} hover-bold`}>
+            className={`text-left nav-link ${pathname.includes('/account/details') ? 'text-bold' : ''} hover-bold`}>
             Account details
           </Link>
 

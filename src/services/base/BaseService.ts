@@ -20,6 +20,7 @@ export abstract class BaseService {
       headers: {
         common: {
           'Content-Type': 'application/json',
+          'X-Road-Client': 'EE/GOV/12345678/hotel-x', 
         },
       },
     });
@@ -36,6 +37,7 @@ export abstract class BaseService {
    * @param {any} e - The error object from Axios.
    * @returns {IResultObject<any>} An object containing error messages.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected handleError(e: any): IResultObject<any> {
     let errorMessage = 'An unknown error occurred';
     if (e.response) {

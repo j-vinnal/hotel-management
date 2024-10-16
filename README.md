@@ -61,6 +61,11 @@ When registering a new user through the application, the user will be created wi
 
 - **JWT Authentication**: The application uses JWT for secure authentication. The `BaseEntityService` class handles token refresh logic to maintain user sessions.
 
+## X-Road Protocol Support
+
+Our service supports the X-Road protocol, implemented via the `X-Road-Client` header. This header is added to all HTTP requests made through the `BaseService` class.
+
+
 ## Getting Started
 
 To get started with the project, follow these steps:

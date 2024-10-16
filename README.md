@@ -24,6 +24,14 @@ The project is organized into several key directories and files:
 
 - **`public/`**: Contains static assets such as images and icons.
 
+## Design and Styling
+
+- **Bootstrap**: The application uses Bootstrap for styling and responsive design. This ensures a consistent and modern look across different devices and screen sizes.
+
+- **Design Inspiration**: 
+  - The homepage design is inspired by [cityboxhotels.com](https://www.cityboxhotels.com).
+  - The admin and user management CRUD functionality design follows a traditional ASP.NET MVC view design.
+
 ## Important Note
 
 While in-memory databases can be useful for certain backend operations, it is generally not recommended to use them for frontend applications. In-memory databases do not persist data across sessions, which can lead to data loss when the application is closed or refreshed.

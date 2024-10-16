@@ -1,4 +1,4 @@
-import { z, ZodType } from 'zod';
+import {z, ZodType} from 'zod';
 
 export interface IRoomAvailabilityRequest {
   guestCount?: number;
@@ -14,15 +14,28 @@ export const RoomAvailabilityRequestSchema = z
     guestCount: z.number().optional(),
     currentBookingId: z.string().uuid().optional(),
   })
-  .refine(
-    (data) => {
-      if (data.startDate && data.endDate) {
-        return data.endDate >= data.startDate;
-      }
-      return true;
-    },
-    {
-      message: "End date cannot be earlier than start date",
-      path: ["endDate"],
+  .superRefine((data, ctx) => {
+    if (data.startDate === undefined && data.endDate !== undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['startDate'],
+        message: 'Start date must be provided',
+      });
     }
-  ) satisfies ZodType<IRoomAvailabilityRequest>;
+
+    if (data.startDate !== undefined && data.endDate === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['endDate'],
+        message: 'End date must be provided',
+      });
+    }
+
+    if (data.startDate && data.endDate && data.endDate < data.startDate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['endDate'],
+        message: 'End date cannot be earlier than start date',
+      });
+    }
+  }) satisfies ZodType<IRoomAvailabilityRequest>;

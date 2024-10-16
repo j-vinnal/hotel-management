@@ -3,33 +3,37 @@
 import withAuth from '@/components/hoc/withAuth';
 import MainLayout from '@/components/layouts/MainLayout';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import { IBooking } from '@/interfaces/domain/IBooking';
-import { IRoom } from '@/interfaces/domain/IRoom';
+import {IBooking} from '@/interfaces/domain/IBooking';
+import {IRoom} from '@/interfaces/domain/IRoom';
 import BookingService from '@/services/BookingService';
 import RoomService from '@/services/RoomService';
-import { JWTContext } from '@/states/contexts/JWTContext';
-import { SearchContext } from '@/states/contexts/SearchContext';
-import { UserContext } from '@/states/contexts/UserContext';
-import { convertToUTC } from '@/utils/convertToUTC';
-import { formatDate } from '@/utils/formatDate';
-import { handleResponseErrors } from '@/utils/handleResponseErrors';
+import {JWTContext} from '@/states/contexts/JWTContext';
+import {SearchContext} from '@/states/contexts/SearchContext';
+import {UserContext} from '@/states/contexts/UserContext';
+import {formatDate} from '@/utils/formatDate';
+import {handleResponseErrors} from '@/utils/handleResponseErrors';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import {useRouter} from 'next/navigation';
+import {useContext, useEffect, useState} from 'react';
+import {toast} from 'react-toastify';
 
-const ConfirmBookingPage = (params: { params: { id?: string } }) => {
+const ConfirmBookingPage = (params: {params: {id?: string}}) => {
   const router = useRouter();
   const roomId = params.params.id;
-  const { fetchEntityById, loading, error } =
+  const {fetchEntityById, loading, error} =
     useEntityActions<IRoom>(RoomService);
-  const { addEntity } = useEntityActions<IBooking>(BookingService);
-  const { jwtResponse } = useContext(JWTContext)!;
-  const { user } = useContext(UserContext)!;
-  const { startDate, endDate, guestCount } = useContext(SearchContext)!;
+  const {addEntity} = useEntityActions<IBooking>(BookingService);
+  const {jwtResponse} = useContext(JWTContext)!;
+  const {user} = useContext(UserContext)!;
+  const {startDate, endDate, guestCount} = useContext(SearchContext)!;
 
   const [room, setRoom] = useState<IRoom | null>(null);
 
+  /**
+   * Fetches the room data by ID and sets it in the state.
+   *
+   * @param roomId - The ID of the room to fetch.
+   */
   const fetchRoom = async () => {
     const roomData = await fetchEntityById(roomId as string);
     setRoom(roomData);
@@ -47,8 +51,8 @@ const ConfirmBookingPage = (params: { params: { id?: string } }) => {
         roomId: room.id!,
         roomNumber: room.roomNumber,
         questId: user!.id!,
-        startDate: convertToUTC(startDate)!,
-        endDate: convertToUTC(endDate)!,
+        startDate: startDate!,
+        endDate: endDate!,
         isCancelled: false,
       };
 
@@ -70,35 +74,35 @@ const ConfirmBookingPage = (params: { params: { id?: string } }) => {
       <h4>Room Details</h4>
       <hr />
       {loading && <p>Loading room details...</p>}
-      {error && <p className="text-danger">Error: {error}</p>}
+      {error && <p className='text-danger'>Error: {error}</p>}
       {room && (
         <>
-          <dl className="row">
-            <dt className="col-sm-2">Check-in date</dt>
-            <dd className="col-sm-10">{formatDate(startDate)}</dd>
-            <dt className="col-sm-2">Check-out date</dt>
-            <dd className="col-sm-10">{formatDate(endDate)}</dd>
-            <dt className="col-sm-2">Guest Count</dt>
-            <dd className="col-sm-10">{guestCount}</dd>
-            <dt className="col-sm-2">Room Name</dt>
-            <dd className="col-sm-10">{room.roomName}</dd>
-            <dt className="col-sm-2">Room Number</dt>
-            <dd className="col-sm-10">{room.roomNumber}</dd>
-            <dt className="col-sm-2">Bed Count</dt>
-            <dd className="col-sm-10">{room.bedCount}</dd>
-            <dt className="col-sm-2">Price</dt>
-            <dd className="col-sm-10">{room.price}</dd>
+          <dl className='row'>
+            <dt className='col-sm-2'>Check-in date</dt>
+            <dd className='col-sm-10'>{formatDate(startDate)}</dd>
+            <dt className='col-sm-2'>Check-out date</dt>
+            <dd className='col-sm-10'>{formatDate(endDate)}</dd>
+            <dt className='col-sm-2'>Guest Count</dt>
+            <dd className='col-sm-10'>{guestCount}</dd>
+            <dt className='col-sm-2'>Room Name</dt>
+            <dd className='col-sm-10'>{room.roomName}</dd>
+            <dt className='col-sm-2'>Room Number</dt>
+            <dd className='col-sm-10'>{room.roomNumber}</dd>
+            <dt className='col-sm-2'>Bed Count</dt>
+            <dd className='col-sm-10'>{room.bedCount}</dd>
+            <dt className='col-sm-2'>Price</dt>
+            <dd className='col-sm-10'>{room.price} €</dd>
           </dl>
 
-          <div className="d-flex align-items-center">
+          <div className='d-flex align-items-center'>
             <button
-              type="button"
+              type='button'
               onClick={onConfirm}
-              className="btn btn-primary me-4">
+              className='btn btn-primary me-4'>
               Confirm Booking
             </button>
-            <div className="me-4">|</div>
-            <Link href="/">Back to search</Link>
+            <div className='me-4'>|</div>
+            <Link href='/'>Back to search</Link>
           </div>
         </>
       )}

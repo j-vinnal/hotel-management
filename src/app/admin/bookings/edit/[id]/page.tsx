@@ -4,34 +4,43 @@ import FormInput from '@/components/FormInput';
 import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import { bookingSchema, IBooking } from '@/interfaces/domain/IBooking';
-import { IClient } from '@/interfaces/domain/IClient';
-import { IRoomAvailabilityRequest } from '@/interfaces/IRoomAvailabilityRequest';
+import {bookingSchema, IBooking} from '@/interfaces/domain/IBooking';
+import {IClient} from '@/interfaces/domain/IClient';
+import {IRoomAvailabilityRequest} from '@/interfaces/IRoomAvailabilityRequest';
 import BookingService from '@/services/BookingService';
 import ClientService from '@/services/ClientService';
-import { RoomContext } from '@/states/contexts/RoomContext';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {RoomContext} from '@/states/contexts/RoomContext';
+import {zodResolver} from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useContext, useEffect, useState } from 'react';
+import {useRouter} from 'next/navigation';
+import {useContext, useEffect, useState} from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import {useForm} from 'react-hook-form';
+import {toast} from 'react-toastify';
 
-const EditBookingPage = (params: { params: { id?: string } }) => {
+/**
+ * Represents the Edit Booking Page component.
+ * This component allows an admin to edit a booking's details.
+ *
+ * @param {Object} params - The parameters for the component.
+ * @param {Object} params.params - The route parameters.
+ * @param {string} [params.params.id] - The ID of the booking to edit.
+ * @returns {JSX.Element} The rendered Edit Booking Page component.
+ */
+const EditBookingPage = (params: {params: {id?: string}}) => {
   const router = useRouter();
   const id = params.params.id;
-  const { fetchEntityById, editEntity, loading, error } =
+  const {fetchEntityById, editEntity, loading, error} =
     useEntityActions<IBooking>(BookingService);
-  const { rooms, fetchRooms } = useContext(RoomContext)!;
-  const { entities: clients, refetch: fetchClients } =
+  const {rooms, fetchRooms} = useContext(RoomContext)!;
+  const {entities: clients, refetch: fetchClients} =
     useEntityActions<IClient>(ClientService);
   const [booking, setBooking] = useState<IBooking | null>(null);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
     reset,
     setError,
     setValue,
@@ -46,12 +55,25 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
     resolver: zodResolver(bookingSchema),
   });
 
+  /**
+   * Fetches the booking data by ID and sets it in the state.
+   *
+   * @param id - The ID of the booking to fetch.
+   */
   const fetchBooking = async () => {
     const bookingData = await fetchEntityById(id as string);
     setBooking(bookingData);
     reset(bookingData);
   };
 
+  /**
+   * Initializes the booking and client data when the component mounts.
+   * Also fetches the initial list of available rooms based on the current booking details.
+   *
+   * @remarks
+   * This effect runs once when the component mounts, fetching the booking and client data.
+   * It also prepares the room availability request using the current booking's start and end dates.
+   */
   useEffect(() => {
     if (id) {
       fetchBooking();
@@ -66,6 +88,14 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
     }
   }, [id]);
 
+  /**
+   * Updates the list of available rooms whenever the booking's start or end date changes.
+   *
+   * @remarks
+   * This effect listens for changes in the booking's start and end dates.
+   * When these dates change, it fetches the updated list of available rooms
+   * to reflect the new availability based on the updated booking dates.
+   */
   useEffect(() => {
     if (booking) {
       const availabilityRequest: IRoomAvailabilityRequest = {
@@ -76,8 +106,13 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
 
       fetchRooms(availabilityRequest);
     }
-  }, [booking?.startDate, booking?.endDate, fetchRooms]);
+  }, [booking, fetchRooms]);
 
+  /**
+   * Handles the form submission to edit the booking.
+   *
+   * @param {IBooking} data - The booking data to submit.
+   */
   const onSubmit = async (data: IBooking) => {
     try {
       await editEntity(id as string, data);
@@ -85,7 +120,7 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
       router.push('/admin/bookings');
     } catch (error) {
       toast.error((error as Error).message);
-      setError('root', { type: 'server', message: (error as Error).message });
+      setError('root', {type: 'server', message: (error as Error).message});
     }
   };
 
@@ -95,104 +130,105 @@ const EditBookingPage = (params: { params: { id?: string } }) => {
       <h4>Booking</h4>
       <hr />
       {loading && <p>Loading booking...</p>}
-      {error && <p className="text-danger">Error: {error}</p>}
+      {error && <p className='text-danger'>Error: {error}</p>}
       {booking && (
-        <div className="row">
+        <div className='row'>
           {errors.root && (
-            <span className="text-danger">{errors.root.message}</span>
+            <span className='text-danger'>{errors.root.message}</span>
           )}
-          <div className="col-md-4">
+          <div className='col-md-4'>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormInput
-                id="roomId"
-                label="Room"
-                type="select"
+                id='roomId'
+                label='Room'
+                type='select'
                 register={register('roomId')}
                 error={errors.roomId}
                 options={rooms
-                  .filter((room) => room.id !== undefined)
-                  .map((room) => ({
+                  .filter(room => room.id !== undefined)
+                  .map(room => ({
                     value: room.id as string,
                     label: `${room.roomName} - ${room.roomNumber}`,
                   }))}
-                styleType="form-group"
+                styleType='form-group'
               />
 
               <FormInput
-                id="questId"
-                label="Client"
-                type="select"
+                id='questId'
+                label='Client'
+                type='select'
                 register={register('questId')}
                 error={errors.questId}
                 options={clients
-                  .filter((client) => client.id !== undefined)
-                  .map((client) => ({
+                  .filter(client => client.id !== undefined)
+                  .map(client => ({
                     value: client.id as string,
                     label: `${client.firstName} ${client.lastName}`,
                   }))}
-                styleType="form-group"
+                styleType='form-group'
               />
 
               <FormInput
-                id="startDate"
-                label="Check-in date"
-                type="date"
+                id='startDate'
+                label='Check-in date'
+                type='date'
                 register={register('startDate')}
                 error={errors.startDate}
                 selectedDate={new Date(booking.startDate)}
-                onDateChange={(date) => {
+                onDateChange={date => {
                   setValue('startDate', date!);
-                  setBooking((prev) => ({
+                  setBooking(prev => ({
                     ...prev!,
                     startDate: date!,
                   }));
                 }}
-                styleType="form-group"
+                styleType='form-group'
               />
 
               <FormInput
-                id="endDate"
-                label="Check-out date"
-                type="date"
+                id='endDate'
+                label='Check-out date'
+                type='date'
                 register={register('endDate')}
+                minDate={booking.startDate}
                 error={errors.endDate}
                 selectedDate={new Date(booking.endDate)}
-                onDateChange={(date) => {
+                onDateChange={date => {
                   setValue('endDate', date!);
-                  setBooking((prev) => ({
+                  setBooking(prev => ({
                     ...prev!,
                     endDate: date!,
                   }));
                 }}
-                styleType="form-group"
+                styleType='form-group'
               />
 
               <FormInput
-                id="isCancelled"
-                label="Cancelled"
-                type="checkbox"
+                id='isCancelled'
+                label='Cancelled'
+                type='checkbox'
                 register={register('isCancelled')}
                 error={errors.isCancelled}
                 checked={booking.isCancelled}
-                onCheckedChange={(checked) => {
+                onCheckedChange={checked => {
                   setValue('isCancelled', checked);
-                  setBooking((prev) => ({
+                  setBooking(prev => ({
                     ...prev!,
                     isCancelled: checked,
                   }));
                 }}
-                styleType="form-group"
+                styleType='form-group'
               />
 
-              <div className="form-group mb-3 d-flex align-items-center">
+              <div className='form-group mb-3 d-flex align-items-center'>
                 <button
-                  type="submit"
-                  className="btn btn-primary me-4"
+                  type='submit'
+                  className='btn btn-primary me-4'
                   disabled={isSubmitting}>
                   Save
                 </button>
-                <div className="me-4">|</div>
-                <Link href="/admin/bookings">Back to List</Link>
+                <div className='me-4'>|</div>
+                <Link href='/admin/bookings'>Back to List</Link>
               </div>
             </form>
           </div>

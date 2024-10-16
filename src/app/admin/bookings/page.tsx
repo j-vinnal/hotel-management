@@ -3,11 +3,11 @@
 import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import { IBooking } from '@/interfaces/domain/IBooking';
+import {IBooking} from '@/interfaces/domain/IBooking';
 import BookingService from '@/services/BookingService';
-import { formatDate } from '@/utils/formatDate';
+import {formatDate} from '@/utils/formatDate';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 const AdminBookingsPage = () => {
   const {
@@ -17,24 +17,29 @@ const AdminBookingsPage = () => {
     error,
   } = useEntityActions<IBooking>(BookingService);
 
+  /**
+   * Fetches all bookings and updates the state.
+   */
   useEffect(() => {
     fetchEntity();
   }, []);
 
+  useEffect(() => {}, [bookings]);
+
   return (
     <AdminLayout>
       <h2>Manage bookings</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {loading && <div className="alert alert-info">Loading...</div>}
+      {error && <div className='alert alert-danger'>{error}</div>}
+      {loading && <div className='alert alert-info'>Loading...</div>}
       {bookings.length === 0 && !loading && (
-        <div className="alert alert-warning">No bookings found</div>
+        <div className='alert alert-warning'>No bookings found</div>
       )}
       {bookings.length > 0 && (
-        <div className="pt-4">
+        <div className='pt-4'>
           <p>
-            <Link href="/admin/bookings/create">Create New</Link>
+            <Link href='/admin/bookings/create'>Create New</Link>
           </p>
-          <table className="table">
+          <table className='table'>
             <thead>
               <tr>
                 <th>Room number</th>
@@ -48,7 +53,7 @@ const AdminBookingsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {bookings.map((booking) => (
+              {bookings.map(booking => (
                 <tr key={booking.id}>
                   <td>{booking.roomNumber}</td>
                   <td>{booking.questFirstName}</td>
@@ -57,10 +62,10 @@ const AdminBookingsPage = () => {
                   <td>{formatDate(booking.endDate)}</td>
                   <td>
                     <input
-                      className="check-box"
+                      className='check-box'
                       disabled
                       checked={booking.isCancelled}
-                      type="checkbox"
+                      type='checkbox'
                     />
                   </td>
                   <td>

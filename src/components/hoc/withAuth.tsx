@@ -1,13 +1,15 @@
 'use client';
 
-import { UserContext } from '@/states/contexts/UserContext';
-import { useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import {UserContext} from '@/states/contexts/UserContext';
+import {useRouter} from 'next/navigation';
+import {useContext, useEffect} from 'react';
 import Spinner from './Spinner';
 
-const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>) => {
+const withAuth = <P extends object>(
+  WrappedComponent: React.ComponentType<P>
+) => {
   return (props: P) => {
-    const { user } = useContext(UserContext)!;
+    const {user} = useContext(UserContext)!;
     const router = useRouter();
 
     useEffect(() => {

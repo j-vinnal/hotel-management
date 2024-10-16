@@ -14,15 +14,25 @@ export const RegisterSchema = z
     firstName: z.string().trim().min(1, {message: 'First name is required'}),
     lastName: z.string().trim().min(1, {message: 'Last name is required'}),
     email: z.string().trim().email({message: 'Invalid email address'}),
-    personalCode: z.string().trim().min(1, {message: 'Personal code is required'}),
+    personalCode: z
+      .string()
+      .trim()
+      .min(1, {message: 'Personal code is required'}),
     password: z
       .string()
       .trim()
       .min(6, {message: 'Password must be at least 6 characters long'})
-      .regex(/[A-Z]/, {message: 'Password must contain at least one uppercase character'})
-      .regex(/[a-z]/, {message: 'Password must contain at least one lowercase character'})
+      .regex(/[A-Z]/, {
+        message: 'Password must contain at least one uppercase character',
+      })
+      .regex(/[a-z]/, {
+        message: 'Password must contain at least one lowercase character',
+      })
       .regex(/\d/, {message: 'Password must contain at least one digit'})
-      .regex(/[^a-zA-Z0-9]/, {message: 'Password must contain at least one non-alphanumeric character'}),
+      .regex(/[^a-zA-Z0-9]/, {
+        message:
+          'Password must contain at least one non-alphanumeric character',
+      }),
     confirmedPassword: z.string().trim(),
   })
   .refine(data => data.password === data.confirmedPassword, {

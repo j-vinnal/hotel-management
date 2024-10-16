@@ -1,5 +1,5 @@
-import { z, ZodType } from 'zod';
-import { IBaseEntity } from './IBaseEntity';
+import {z, ZodType} from 'zod';
+import {IBaseEntity} from './IBaseEntity';
 
 export interface IRoom extends IBaseEntity {
   roomName: string;
@@ -12,17 +12,17 @@ export interface IRoom extends IBaseEntity {
 
 export const roomSchema = z.object({
   id: z.string().uuid().optional(),
-  roomName: z.string().min(1, { message: 'Room name is required' }),
+  roomName: z.string().min(1, {message: 'Room name is required'}),
   roomNumber: z
     .number()
     .int()
-    .min(1, { message: 'Room number must be a positive integer' }),
+    .min(1, {message: 'Room number must be a positive integer'}),
   bedCount: z
     .number()
     .int()
-    .min(1, { message: 'Bed count must be at least 1' })
-    .max(3, { message: 'Bed count must be at most 3' }),
-  price: z.number().min(0, { message: 'Price must be a non-negative number' }),
+    .min(1, {message: 'Bed count must be at least 1'})
+    .max(3, {message: 'Bed count must be at most 3'}),
+  price: z.number().min(0, {message: 'Price must be a non-negative number'}),
   imageUrl: z.string().optional(),
-  hotelId: z.string().uuid({ message: 'Invalid Hotel ID' }),
+  hotelId: z.string().uuid({message: 'Invalid Hotel ID'}),
 }) satisfies ZodType<IRoom>;

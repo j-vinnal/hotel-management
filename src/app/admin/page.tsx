@@ -3,10 +3,10 @@
 import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import { IHotel } from '@/interfaces/domain/IHotel';
+import {IHotel} from '@/interfaces/domain/IHotel';
 import HotelService from '@/services/HotelService';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 const AdminHotelPage = () => {
   const {
@@ -16,6 +16,9 @@ const AdminHotelPage = () => {
     error,
   } = useEntityActions<IHotel>(HotelService);
 
+  /**
+   * Fetches the list of rooms and updates the state.
+   */
   useEffect(() => {
     fetchEntity();
   }, []);
@@ -23,14 +26,14 @@ const AdminHotelPage = () => {
   return (
     <AdminLayout>
       <h2>Manage hotel</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {loading && <div className="alert alert-info">Loading...</div>}
+      {error && <div className='alert alert-danger'>{error}</div>}
+      {loading && <div className='alert alert-info'>Loading...</div>}
       {hotels.length === 0 && !loading && (
-        <div className="alert alert-warning">No hotels found</div>
+        <div className='alert alert-warning'>No hotels found</div>
       )}
       {hotels.length > 0 && (
-        <div className="pt-4">
-          <table className="table">
+        <div className='pt-4'>
+          <table className='table'>
             <thead>
               <tr>
                 <th>Name</th>
@@ -41,7 +44,7 @@ const AdminHotelPage = () => {
               </tr>
             </thead>
             <tbody>
-              {hotels.map((hotel) => (
+              {hotels.map(hotel => (
                 <tr key={hotel.id}>
                   <td>{hotel.name}</td>
                   <td>{hotel.address}</td>

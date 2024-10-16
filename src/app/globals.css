@@ -111,7 +111,6 @@ button.accept-policy {
   }
 }
 
-
 .full-width {
   object-fit: cover;
   width: 100%;
@@ -136,9 +135,8 @@ button.accept-policy {
 }
 
 .card:hover {
-  transform: scale(1.03); 
+  transform: scale(1.03);
 }
-
 
 @media (max-width: 991px) {
   .search-bar-form {
@@ -174,8 +172,13 @@ button.accept-policy {
 
 .datepicker-w-100,
 .datepicker-w-100 > .react-datepicker-wrapper,
-.datepicker-w-100 > .react-datepicker-wrapper > .react-datepicker__input-container,
-.datepicker-w-100 > .react-datepicker-wrapper > .react-datepicker__input-container input {
+.datepicker-w-100
+  > .react-datepicker-wrapper
+  > .react-datepicker__input-container,
+.datepicker-w-100
+  > .react-datepicker-wrapper
+  > .react-datepicker__input-container
+  input {
   width: 100% !important;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }

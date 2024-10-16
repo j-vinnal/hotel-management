@@ -1,7 +1,7 @@
 'use client';
 
-import { IJWTResponse } from '@/interfaces/IJWTResponse';
-import { createContext, useState } from 'react';
+import {IJWTResponse} from '@/interfaces/IJWTResponse';
+import {createContext, useState, useContext} from 'react';
 
 export interface IJWTContext {
   jwtResponse: IJWTResponse | undefined;
@@ -9,6 +9,14 @@ export interface IJWTContext {
 }
 
 export const JWTContext = createContext<IJWTContext | undefined>(undefined);
+
+/**
+ * JWTProvider component that provides JWT-related context to its children.
+ *
+ * @param {object} props - The properties object.
+ * @param {React.ReactNode} props.children - The child components to be rendered within the context provider.
+ * @returns {JSX.Element} The context-wrapped component tree.
+ */
 export default function JWTProvider({
   children,
 }: Readonly<{
@@ -19,8 +27,16 @@ export default function JWTProvider({
   );
 
   return (
-    <JWTContext.Provider value={{ jwtResponse, setJwtResponse }}>
+    <JWTContext.Provider value={{jwtResponse, setJwtResponse}}>
       {children}
     </JWTContext.Provider>
   );
 }
+
+export const useJWT = () => {
+  const context = useContext(JWTContext);
+  if (!context) {
+    throw new Error('useJWT must be used within a JWTProvider');
+  }
+  return context;
+};

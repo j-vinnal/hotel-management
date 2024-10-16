@@ -3,10 +3,10 @@
 import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import { IRoom } from '@/interfaces/domain/IRoom';
+import {IRoom} from '@/interfaces/domain/IRoom';
 import RoomService from '@/services/RoomService';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 const AdminPage = () => {
   const {
@@ -16,6 +16,9 @@ const AdminPage = () => {
     error,
   } = useEntityActions<IRoom>(RoomService);
 
+  /**
+   * Fetches the list of rooms and updates the state.
+   */
   useEffect(() => {
     fetchEntity();
   }, []);
@@ -24,13 +27,13 @@ const AdminPage = () => {
     <AdminLayout>
       <h2>Manage rooms</h2>
       {loading && <p>Loading rooms...</p>}
-      {error && <p className="text-danger">Error: {error}</p>}
+      {error && <p className='text-danger'>Error: {error}</p>}
       {rooms && (
-        <div className="pt-4">
+        <div className='pt-4'>
           <p>
-            <Link href="/admin/rooms/create">Create New</Link>
+            <Link href='/admin/rooms/create'>Create New</Link>
           </p>
-          <table className="table">
+          <table className='table'>
             <thead>
               <tr>
                 <th>Room number</th>
@@ -42,16 +45,16 @@ const AdminPage = () => {
               </tr>
             </thead>
             <tbody>
-              {rooms.map((room) => (
+              {rooms.map(room => (
                 <tr key={room.id}>
                   <td>{room.roomNumber}</td>
                   <td>{room.roomName}</td>
                   <td>{room.bedCount}</td>
                   <td>{room.price}</td>
                   <td>
-                    {(room.imageUrl?.length ?? 0) > 30 ?
-                      `${room.imageUrl!.substring(0, 30)}...`
-                    : (room.imageUrl ?? 'No Image')}
+                    {(room.imageUrl?.length ?? 0) > 30
+                      ? `${room.imageUrl!.substring(0, 30)}...`
+                      : (room.imageUrl ?? 'No Image')}
                   </td>
                   <td>
                     <Link href={`/admin/rooms/edit/${room.id}`}>Edit</Link> |{' '}

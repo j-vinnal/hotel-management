@@ -7,14 +7,17 @@ This project is a hotel room booking application built using Next.js
 The project is organized into several key directories and files:
 
 - **`src/services/base/`**: Contains the base service classes used for making HTTP requests.
+
   - **`BaseService.ts`**: An abstract class that sets up Axios for making HTTP requests. It includes error handling and request interceptors.
   - **`BaseEntityService.ts`**: Extends `BaseService` to provide CRUD operations for entities. It handles JWT authentication and token refresh logic.
 
 - **`src/interfaces/`**: Contains TypeScript interfaces for type safety.
+
   - **`auth/IResultObject.ts`**: Defines the structure of the result object returned by service methods.
   - **`IJWTResponse.ts`**: Defines the structure of the JWT response used for authentication.
 
 - **`src/pages/`**: Contains the Next.js pages, which are automatically routed based on their file names.
+
   - **`[id].tsx`**: Dynamic routing is used to handle pages for individual hotel rooms, identified by their unique IDs.
 
 - **`src/components/`**: Contains reusable React components used throughout the application.
@@ -23,13 +26,14 @@ The project is organized into several key directories and files:
 
 ## Important Note
 
-While in-memory databases can be useful for certain backend operations, it is generally not recommended to use them for frontend applications. In-memory databases do not persist data across sessions, which can lead to data loss when the application is closed or refreshed. 
+While in-memory databases can be useful for certain backend operations, it is generally not recommended to use them for frontend applications. In-memory databases do not persist data across sessions, which can lead to data loss when the application is closed or refreshed.
 
 ## Seeded Users
 
 The application comes with pre-configured users for testing purposes:
 
 - **Admin User**
+
   - **UserName**: `admin@hotelx.com`
   - **Password**: `Foo.Bar1`
 
@@ -48,10 +52,6 @@ When registering a new user through the application, the user will be created wi
 - **Image Optimization**: Next.js automatically optimizes images, ensuring fast load times and a better user experience.
 
 - **JWT Authentication**: The application uses JWT for secure authentication. The `BaseEntityService` class handles token refresh logic to maintain user sessions.
-
-
-
-
 
 ## Getting Started
 

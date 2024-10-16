@@ -3,20 +3,25 @@
 import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import { IRoom } from '@/interfaces/domain/IRoom';
+import {IRoom} from '@/interfaces/domain/IRoom';
 import RoomService from '@/services/RoomService';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import {useRouter} from 'next/navigation';
+import {useEffect, useState} from 'react';
+import {toast} from 'react-toastify';
 
-const DeleteRoomPage = (params: { params: { id?: string } }) => {
+const DeleteRoomPage = (params: {params: {id?: string}}) => {
   const router = useRouter();
   const id = params.params.id;
-  const { fetchEntityById, deleteEntity, loading, error } =
+  const {fetchEntityById, deleteEntity, loading, error} =
     useEntityActions<IRoom>(RoomService);
   const [room, setRoom] = useState<IRoom | null>(null);
 
+  /**
+   * Fetches the room data by ID and sets it in the state.
+   *
+   * @param id - The ID of the room to fetch.
+   */
   const fetchRoom = async () => {
     const roomData = await fetchEntityById(id as string);
     setRoom(roomData);
@@ -47,35 +52,35 @@ const DeleteRoomPage = (params: { params: { id?: string } }) => {
       <h4>Room</h4>
       <hr />
       {loading && <p>Loading room...</p>}
-      {error && <p className="text-danger">Error: {error}</p>}
+      {error && <p className='text-danger'>Error: {error}</p>}
       {room && (
         <>
-          <dl className="row">
-            <dt className="col-sm-2">Room Name</dt>
-            <dd className="col-sm-10">{room.roomName}</dd>
-            <dt className="col-sm-2">Room Number</dt>
-            <dd className="col-sm-10">{room.roomNumber}</dd>
-            <dt className="col-sm-2">Bed Count</dt>
-            <dd className="col-sm-10">{room.bedCount}</dd>
-            <dt className="col-sm-2">Price</dt>
-            <dd className="col-sm-10">{room.price}</dd>
-            <dt className="col-sm-2">Image URL</dt>
-            <dd className="col-sm-10">{room.imageUrl ?? 'No Image'}</dd>
-            <dt className="col-sm-2">Hotel ID</dt>
-            <dd className="col-sm-10">{room.hotelId}</dd>
+          <dl className='row'>
+            <dt className='col-sm-2'>Room Name</dt>
+            <dd className='col-sm-10'>{room.roomName}</dd>
+            <dt className='col-sm-2'>Room Number</dt>
+            <dd className='col-sm-10'>{room.roomNumber}</dd>
+            <dt className='col-sm-2'>Bed Count</dt>
+            <dd className='col-sm-10'>{room.bedCount}</dd>
+            <dt className='col-sm-2'>Price</dt>
+            <dd className='col-sm-10'>{room.price}</dd>
+            <dt className='col-sm-2'>Image URL</dt>
+            <dd className='col-sm-10'>{room.imageUrl ?? 'No Image'}</dd>
+            <dt className='col-sm-2'>Hotel ID</dt>
+            <dd className='col-sm-10'>{room.hotelId}</dd>
           </dl>
 
-          <div className="d-flex align-items-center">
+          <div className='d-flex align-items-center'>
             <button
-              type="button"
+              type='button'
               onClick={() => room.id && onSubmit(room.id)}
-              className="btn btn-danger me-4"
+              className='btn btn-danger me-4'
               disabled={loading}>
               Delete
             </button>
 
-            <div className="me-4">|</div>
-            <Link href="/admin/rooms">Back to List</Link>
+            <div className='me-4'>|</div>
+            <Link href='/admin/rooms'>Back to List</Link>
           </div>
         </>
       )}

@@ -133,6 +133,9 @@ const HotelBookingPage = () => {
           {!error && (
             <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4'>
               {loading && <p>Loading rooms...</p>}
+              {rooms.length === 0 && !loading && (
+                <div className='alert alert-warning'>No rooms found matching the search criteria</div>
+              )}
               {rooms.map(room => (
                 <RoomCard
                   key={room.id}

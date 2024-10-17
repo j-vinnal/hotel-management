@@ -30,7 +30,7 @@ const AdminBookingsPage = () => {
     <AdminLayout>
       <h2>Manage bookings</h2>
       {error && <div className='alert alert-danger'>{error}</div>}
-      {loading && <p>Loading bookings...</p>}
+      {loading &&<p>Loading bookings...</p>}
       {bookings.length === 0 && !loading && (
         <div className='alert alert-warning'>No bookings found</div>
       )}

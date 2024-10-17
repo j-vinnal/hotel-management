@@ -66,7 +66,7 @@ const MyBookingsPage = () => {
       {error && <div className='alert alert-danger'>{error}</div>}
       {loading && <div className='alert alert-info'>Loading...</div>}
       {bookings.length === 0 && !loading && (
-        <div className='alert alert-warning'>No bookings found</div>
+        <p>No bookings found</p>
       )}
       {bookings.length > 0 && (
         <div className='pt-4'>

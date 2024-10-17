@@ -27,7 +27,7 @@ const AdminHotelPage = () => {
     <AdminLayout>
       <h2>Manage hotel</h2>
       {error && <div className='alert alert-danger'>{error}</div>}
-      {loading && <div className='alert alert-info'>Loading...</div>}
+      {loading && <p>Loading hotel info...</p>}
       {hotels.length === 0 && !loading && (
         <div className='alert alert-warning'>No hotels found</div>
       )}

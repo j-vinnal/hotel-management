@@ -27,7 +27,7 @@ const AdminRoomPage = () => {
     <AdminLayout>
       <h2>Manage rooms</h2>
       {error && <div className='alert alert-danger'>{error}</div>}
-      {loading && <div className='alert alert-info'>Loading...</div>}
+      {loading && <p>Loading rooms...</p>}
       {rooms.length === 0 && !loading && (
         <div className='alert alert-warning'>No rooms found</div>
       )}

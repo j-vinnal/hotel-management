@@ -132,9 +132,11 @@ const HotelBookingPage = () => {
           {error && <p className='text-danger'>Error: {error}</p>}
           {!error && (
             <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4'>
+
+              loading &&
               {loading && <p>Loading rooms...</p>}
               {rooms.length === 0 && !loading && (
-                <div className='alert alert-warning'>No rooms found matching the search criteria</div>
+                <p>No rooms found matching the search criteria</p>
               )}
               {rooms.map(room => (
                 <RoomCard

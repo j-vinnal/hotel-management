@@ -27,7 +27,7 @@ The project is organized into several key directories and files:
 
 ## Design and Styling
 
-- **Bootstrap**: The application uses Bootstrap for styling and responsive design. This ensures a consistent and modern look across different devices and screen sizes.
+- **Bootstrap**: The application uses Bootstrap for styling and responsive design.
 
 - **Design Inspiration**: 
   - The homepage design is inspired by [cityboxhotels.com](https://www.cityboxhotels.com).

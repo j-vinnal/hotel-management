@@ -64,7 +64,7 @@ const MyBookingsPage = () => {
     <MainLayout>
       <h2>My bookings</h2>
       {error && <div className='alert alert-danger'>{error}</div>}
-      {loading && <div className='alert alert-info'>Loading...</div>}
+      {loading && <p>Loading...</p>}
       {bookings.length === 0 && !loading && (
         <p>No bookings found</p>
       )}

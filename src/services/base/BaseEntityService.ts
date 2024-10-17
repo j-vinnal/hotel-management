@@ -146,6 +146,7 @@ export abstract class BaseEntityService<
       if (response.status < 300) {
         return {data: response.data};
       }
+
       return {errors: [`${response.status} ${response.statusText}`]};
     } catch (e: any) {
       if (e.response?.status === 401 && retry) {

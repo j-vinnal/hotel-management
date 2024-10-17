@@ -34,6 +34,7 @@ const useEntityActions = <T extends IBaseEntity>(
     try {
       checkJwtAndHandleError(jwtResponse);
       const response = await service.postRequest(entity, jwtResponse!);
+
       handleResponseErrors(response);
       return response.data;
     } catch (error) {

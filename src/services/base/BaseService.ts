@@ -41,14 +41,24 @@ export abstract class BaseService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected handleError(e: any): IResultObject<any> {
     let errorMessage = 'An unknown error occurred';
+    let errorType = 'Unknown';
+    let errorDetail = '';
+
     if (e.response) {
-      errorMessage = `${e.response.data?.error || 'No error message provided'} - ${e.response.status} ${e.response.statusText}`;
+        const errorData = e.response.data;
+        errorType = errorData?.type || 'Unknown';
+        errorMessage = errorData?.message || 'No error message provided';
+        errorDetail = errorData?.detail || '';
     } else if (e.request) {
-      errorMessage = 'No response received from server. Please try again later';
+        errorMessage = 'No response received from server. Please try again later';
     } else {
-      errorMessage = e.message;
+        errorMessage = e.message;
     }
 
-    return {errors: [errorMessage]};
+    return {
+        errors: [errorMessage],
+        type: errorType,
+        detail: errorDetail
+    };
   }
 }

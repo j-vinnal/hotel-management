@@ -6,7 +6,8 @@ import Axios, {AxiosInstance} from 'axios';
  * It includes error handling and request interceptors.
  */
 export abstract class BaseService {
-  private static hostBaseURL = 'http://localhost:5172/api/';
+  private static hostBaseURL =
+  process.env.NEXT_PUBLIC_BACKEND_URL + '/api/' || 'http://localhost:5172/api/';
   protected axios: AxiosInstance;
 
   /**

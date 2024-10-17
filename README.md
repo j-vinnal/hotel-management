@@ -1,6 +1,7 @@
 # Hotel Room Booking Application
 
-This project is a hotel room booking application built using Next.js
+This project is a hotel room booking application built using Next.js and hosted on Azure. You can explore the application at [https://hotel-x.azurewebsites.net/](https://hotel-x.azurewebsites.net/).
+
 
 ## Project Structure
 
@@ -73,6 +74,47 @@ To get started with the project, follow these steps:
 1. **Install Dependencies**: Run `npm install` to install all necessary packages.
 2. **Run the Development Server**: Use `npm run dev` to start the development server. The application will be available at `http://localhost:3000`.
 3. **Build for Production**: Use `npm run build` to create an optimized production build.
+
+
+## Docker (Optional)
+
+###  Dockerfile Build Information
+
+The application is containerized using a multi-stage Dockerfile. It leverages Node.js 18 on Alpine Linux for a lightweight and efficient build. The Dockerfile includes stages for installing dependencies, building the application, and preparing a production-ready image with Next.js optimizations.
+
+### Build and run locally
+
+Create the image:
+
+```bash
+docker build -t hotelx-nextjs:latest .
+```
+
+Run the container
+
+```bash
+docker run -d -p 8080:80 hotelx-nextjs:latest
+```
+
+### Build to Docker Hub
+
+Create the image:
+
+```bash
+docker buildx build --progress=plain -t hotelx-nextjs:latest .
+```
+
+Create a tag:
+
+```bash
+docker tag hotelx-nextjs <your-docker-hub-profile>/hotelx-nextjs:latest
+```
+
+Push the image:
+
+```bash
+docker push <your-docker-hub-profile>/hotelx-nextjs:latest
+```
 
 ## Contributing
 

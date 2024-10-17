@@ -8,7 +8,7 @@ import RoomService from '@/services/RoomService';
 import Link from 'next/link';
 import {useEffect} from 'react';
 
-const AdminPage = () => {
+const AdminRoomPage = () => {
   const {
     entities: rooms,
     refetch: fetchEntity,
@@ -26,9 +26,12 @@ const AdminPage = () => {
   return (
     <AdminLayout>
       <h2>Manage rooms</h2>
-      {loading && <p>Loading rooms...</p>}
-      {error && <p className='text-danger'>Error: {error}</p>}
-      {rooms && (
+      {error && <div className='alert alert-danger'>{error}</div>}
+      {loading && <div className='alert alert-info'>Loading...</div>}
+      {rooms.length === 0 && !loading && (
+        <div className='alert alert-warning'>No rooms found</div>
+      )}
+      {rooms.length > 0 && (
         <div className='pt-4'>
           <p>
             <Link href='/admin/rooms/create'>Create New</Link>
@@ -74,4 +77,4 @@ const AdminPage = () => {
   );
 };
 
-export default withAdminAuth(AdminPage);
+export default withAdminAuth(AdminRoomPage);

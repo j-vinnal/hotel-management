@@ -132,8 +132,6 @@ const HotelBookingPage = () => {
           {error && <p className='text-danger'>Error: {error}</p>}
           {!error && (
             <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4'>
-
-              
               {loading && <p>Loading rooms...</p>}
               {rooms.length === 0 && !loading && (
                 <p>No rooms found matching the search criteria</p>

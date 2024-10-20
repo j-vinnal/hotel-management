@@ -121,12 +121,14 @@ button.accept-policy {
   display: block;
   transition: opacity 0.3s ease-in-out;
   opacity: 0;
+  pointer-events: none;
 }
 
 .visible {
   display: block;
   transition: opacity 0.3s ease-in-out;
   opacity: 1;
+  pointer-events: auto;
 }
 
 .card {
@@ -183,3 +185,14 @@ button.accept-policy {
   box-sizing: border-box;
 }
 
+.search-container {
+  position: relative;
+  z-index: 2001;
+}
+
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}

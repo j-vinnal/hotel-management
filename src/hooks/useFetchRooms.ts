@@ -23,8 +23,7 @@ const useFetchRooms = () => {
 
   const fetchRooms = useCallback(
     async (availabilityRequest?: IRoomAvailabilityRequest) => {
-
-      const { startDate, endDate } = availabilityRequest || {};
+      const {startDate, endDate} = availabilityRequest || {};
 
       // Check if both dates are provided or both are empty
       if ((startDate && endDate) || (!startDate && !endDate)) {

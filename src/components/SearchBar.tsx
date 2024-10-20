@@ -7,13 +7,13 @@ import {
 } from '@/interfaces/IRoomAvailabilityRequest';
 import {RoomContext} from '@/states/contexts/RoomContext';
 import {SearchContext} from '@/states/contexts/SearchContext';
-import { CheckInTime, CheckOutTime } from '@/utils/BookingConstants';
-import { setDateWithFixedTime } from '@/utils/setDateWithFixedTime';
+import {CheckInTime, CheckOutTime} from '@/utils/BusinessConstants';
+import {setDateWithFixedTime} from '@/utils/setDateWithFixedTime';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {usePathname, useRouter} from 'next/navigation';
 import {useContext, useEffect} from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useForm } from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
 
 /**
@@ -36,19 +36,21 @@ const SearchBar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-
- 
   const {
     register,
     handleSubmit,
     formState: {errors, isSubmitting},
     setError,
-    reset
+    reset,
   } = useForm<IRoomAvailabilityRequest>({
     defaultValues: {
       guestCount: guestCount,
-      startDate: startDate ? setDateWithFixedTime(startDate, CheckInTime, 0) : undefined,
-      endDate: endDate ? setDateWithFixedTime(endDate, CheckOutTime, 0) : undefined,
+      startDate: startDate
+        ? setDateWithFixedTime(startDate, CheckInTime, 0)
+        : undefined,
+      endDate: endDate
+        ? setDateWithFixedTime(endDate, CheckOutTime, 0)
+        : undefined,
     },
     resolver: zodResolver(RoomAvailabilityRequestSchema),
   });
@@ -59,8 +61,12 @@ const SearchBar = () => {
   useEffect(() => {
     reset({
       guestCount: guestCount,
-      startDate: startDate ? setDateWithFixedTime(startDate, CheckInTime, 0) : undefined,
-      endDate: endDate ? setDateWithFixedTime(endDate, CheckOutTime, 0) : undefined,
+      startDate: startDate
+        ? setDateWithFixedTime(startDate, CheckInTime, 0)
+        : undefined,
+      endDate: endDate
+        ? setDateWithFixedTime(endDate, CheckOutTime, 0)
+        : undefined,
     });
   }, [guestCount, startDate, endDate, reset]);
 
@@ -72,7 +78,6 @@ const SearchBar = () => {
    */
   const handleSubmitSearch = async (data: IRoomAvailabilityRequest) => {
     try {
-
       await fetchRooms(data);
 
       if (pathname !== '/') {
@@ -106,7 +111,6 @@ const SearchBar = () => {
   const commonStyle = {
     height: '40px',
   };
-
 
   return (
     <>
@@ -156,7 +160,11 @@ const SearchBar = () => {
           label='Check-out date'
           type='date'
           register={register('endDate')}
-          minDate={startDate ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000) : new Date()}
+          minDate={
+            startDate
+              ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
+              : new Date()
+          }
           error={errors.endDate}
           selectedDate={endDate}
           onDateChange={date => {

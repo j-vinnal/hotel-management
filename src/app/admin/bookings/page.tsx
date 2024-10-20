@@ -3,11 +3,11 @@
 import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import { IBooking } from '@/interfaces/domain/IBooking';
+import {IBooking} from '@/interfaces/domain/IBooking';
 import BookingService from '@/services/BookingService';
-import { formatDate } from '@/utils/formatDate';
+import {formatDate} from '@/utils/formatDate';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 const AdminBookingsPage = () => {
   const {
@@ -21,7 +21,7 @@ const AdminBookingsPage = () => {
    * Fetches all bookings and updates the state.
    */
   useEffect(() => {
-    fetchEntity()
+    fetchEntity();
   }, []);
 
   //useEffect(() => {}, [bookings]);
@@ -30,7 +30,7 @@ const AdminBookingsPage = () => {
     <AdminLayout>
       <h2>Manage bookings</h2>
       {error && <div className='alert alert-danger'>{error}</div>}
-      {loading &&<p>Loading bookings...</p>}
+      {loading && <p>Loading bookings...</p>}
       {bookings.length === 0 && !loading && (
         <div className='alert alert-warning'>No bookings found</div>
       )}
@@ -47,6 +47,7 @@ const AdminBookingsPage = () => {
                 <th>Last name</th>
                 <th>Check in</th>
                 <th>Check out</th>
+                <th>Guest count</th>
                 <th>Is cancelled</th>
 
                 <th></th>
@@ -54,13 +55,13 @@ const AdminBookingsPage = () => {
             </thead>
             <tbody>
               {bookings.map(booking => (
-
                 <tr key={booking.id}>
                   <td>{booking.roomNumber}</td>
                   <td>{booking.questFirstName}</td>
                   <td>{booking.questLastName}</td>
                   <td>{formatDate(booking.startDate, 'dd-MM-yyyy HH:mm')}</td>
                   <td>{formatDate(booking.endDate, 'dd-MM-yyyy HH:mm')}</td>
+                  <td>{booking.guestCount}</td>
                   <td>
                     <input
                       className='check-box'

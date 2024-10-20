@@ -7,7 +7,8 @@ import Axios, {AxiosInstance} from 'axios';
  */
 export abstract class BaseService {
   private static hostBaseURL =
-  process.env.NEXT_PUBLIC_BACKEND_URL + '/api/' || 'http://localhost:5172/api/';
+    process.env.NEXT_PUBLIC_BACKEND_URL + '/api/' ||
+    'http://localhost:5172/api/';
   protected axios: AxiosInstance;
 
   /**
@@ -21,7 +22,7 @@ export abstract class BaseService {
       headers: {
         common: {
           'Content-Type': 'application/json',
-          'X-Road-Client': 'EE/GOV/12345678/hotel-x', 
+          'X-Road-Client': 'EE/GOV/12345678/hotel-x',
         },
       },
     });
@@ -45,20 +46,20 @@ export abstract class BaseService {
     let errorDetail = '';
 
     if (e.response) {
-        const errorData = e.response.data;
-        errorType = errorData?.type || 'Unknown';
-        errorMessage = errorData?.message || 'No error message provided';
-        errorDetail = errorData?.detail || '';
+      const errorData = e.response.data;
+      errorType = errorData?.type || 'Unknown';
+      errorMessage = errorData?.message || 'No error message provided';
+      errorDetail = errorData?.detail || '';
     } else if (e.request) {
-        errorMessage = 'No response received from server. Please try again later';
+      errorMessage = 'No response received from server. Please try again later';
     } else {
-        errorMessage = e.message;
+      errorMessage = e.message;
     }
 
     return {
-        errors: [errorMessage],
-        type: errorType,
-        detail: errorDetail
+      errors: [errorMessage],
+      type: errorType,
+      detail: errorDetail,
     };
   }
 }

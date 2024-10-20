@@ -10,7 +10,7 @@ import {IRoomAvailabilityRequest} from '@/interfaces/IRoomAvailabilityRequest';
 import BookingService from '@/services/BookingService';
 import ClientService from '@/services/ClientService';
 import {RoomContext} from '@/states/contexts/RoomContext';
-import {CheckInTime, CheckOutTime} from '@/utils/BookingConstants';
+import {CheckInTime, CheckOutTime} from '@/utils/BusinessConstants';
 import {setDateWithFixedTime} from '@/utils/setDateWithFixedTime';
 import {zodResolver} from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -41,6 +41,7 @@ const CreateBookingPage = () => {
       endDate: new Date(),
       roomId: '',
       questId: '',
+      guestCount: 1,
       isCancelled: false,
     },
     resolver: zodResolver(bookingSchema),
@@ -124,7 +125,7 @@ const CreateBookingPage = () => {
                   .filter(room => room.id !== undefined)
                   .map(room => ({
                     value: room.id as string,
-                    label: `${room.roomName} - ${room.roomNumber}`,
+                    label: `${room.roomName} - ${room.roomNumber} - (${room.bedCount} beds)`,
                   })),
               ]}
               styleType='form-group'
@@ -172,6 +173,15 @@ const CreateBookingPage = () => {
               selectedDate={endDate}
               error={errors.endDate}
               onDateChange={date => onDateChange(date, false)}
+              styleType='form-group'
+            />
+
+            <FormInput
+              id='guestCount'
+              label='Guest count'
+              type='number'
+              register={register('guestCount', {valueAsNumber: true})}
+              error={errors.guestCount}
               styleType='form-group'
             />
 

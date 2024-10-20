@@ -82,9 +82,15 @@ const CancelBookingPage = (params: {params: {id?: string}}) => {
             <dt className='col-sm-2'>Last name</dt>
             <dd className='col-sm-10'>{booking.questLastName}</dd>
             <dt className='col-sm-2'>Check-in date</dt>
-            <dd className='col-sm-10'>{formatDate(booking.startDate, 'dd-MM-yyyy HH:mm')}</dd>
+            <dd className='col-sm-10'>
+              {formatDate(booking.startDate, 'dd-MM-yyyy HH:mm')}
+            </dd>
             <dt className='col-sm-2'>Check-out date</dt>
-            <dd className='col-sm-10'>{formatDate(booking.endDate, 'dd-MM-yyyy HH:mm')}</dd>
+            <dd className='col-sm-10'>
+              {formatDate(booking.endDate, 'dd-MM-yyyy HH:mm')}
+            </dd>
+            <dt className='col-sm-2'>Guest count</dt>
+            <dd className='col-sm-10'>{booking.guestCount}</dd>
             <dt className='col-sm-2'>Is cancelled</dt>
             <dd className='col-sm-10'>
               <input

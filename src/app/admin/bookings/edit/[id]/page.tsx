@@ -17,8 +17,8 @@ import {useContext, useEffect, useState} from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import {useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
-import { CheckInTime, CheckOutTime } from '@/utils/BookingConstants';
-import { setDateWithFixedTime } from '@/utils/setDateWithFixedTime';
+import {CheckInTime, CheckOutTime} from '@/utils/BusinessConstants';
+import {setDateWithFixedTime} from '@/utils/setDateWithFixedTime';
 
 /**
  * Represents the Edit Booking Page component.
@@ -52,6 +52,7 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
       endDate: booking?.endDate,
       roomId: booking?.roomId,
       questId: booking?.questId,
+      guestCount: booking?.guestCount,
       isCancelled: booking?.isCancelled,
     },
     resolver: zodResolver(bookingSchema),
@@ -164,7 +165,7 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
                   .filter(room => room.id !== undefined)
                   .map(room => ({
                     value: room.id as string,
-                    label: `${room.roomName} - ${room.roomNumber}`,
+                    label: `${room.roomName} - ${room.roomNumber} - (${room.bedCount} beds)`,
                   }))}
                 styleType='form-group'
               />
@@ -193,7 +194,11 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
                 selectedDate={new Date(booking.startDate)}
                 onDateChange={date => {
                   if (date) {
-                    const dateWithTime = setDateWithFixedTime(date, CheckInTime, 0);
+                    const dateWithTime = setDateWithFixedTime(
+                      date,
+                      CheckInTime,
+                      0
+                    );
                     setValue('startDate', dateWithTime);
                     setBooking(prev => ({
                       ...prev!,
@@ -214,7 +219,11 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
                 selectedDate={new Date(booking.endDate)}
                 onDateChange={date => {
                   if (date) {
-                    const dateWithTime = setDateWithFixedTime(date, CheckOutTime, 0);
+                    const dateWithTime = setDateWithFixedTime(
+                      date,
+                      CheckOutTime,
+                      0
+                    );
                     setValue('endDate', dateWithTime);
                     setBooking(prev => ({
                       ...prev!,
@@ -222,6 +231,15 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
                     }));
                   }
                 }}
+                styleType='form-group'
+              />
+
+              <FormInput
+                id='guestCount'
+                label='Guest count'
+                type='number'
+                register={register('guestCount', {valueAsNumber: true})}
+                error={errors.guestCount}
                 styleType='form-group'
               />
 

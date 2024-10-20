@@ -53,6 +53,7 @@ const ConfirmBookingPage = (params: {params: {id?: string}}) => {
         questId: user!.id!,
         startDate: startDate!,
         endDate: endDate!,
+        guestCount: guestCount!,
         isCancelled: false,
       };
 
@@ -79,9 +80,13 @@ const ConfirmBookingPage = (params: {params: {id?: string}}) => {
         <>
           <dl className='row'>
             <dt className='col-sm-2'>Check-in date</dt>
-            <dd className='col-sm-10'>{formatDate(startDate, 'dd-MM-yyyy HH:mm')}</dd>
+            <dd className='col-sm-10'>
+              {formatDate(startDate, 'dd-MM-yyyy HH:mm')}
+            </dd>
             <dt className='col-sm-2'>Check-out date</dt>
-            <dd className='col-sm-10'>{formatDate(endDate, 'dd-MM-yyyy HH:mm')}</dd>
+            <dd className='col-sm-10'>
+              {formatDate(endDate, 'dd-MM-yyyy HH:mm')}
+            </dd>
             <dt className='col-sm-2'>Guest Count</dt>
             <dd className='col-sm-10'>{guestCount}</dd>
             <dt className='col-sm-2'>Room Name</dt>

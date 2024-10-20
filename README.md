@@ -2,7 +2,6 @@
 
 This project is a hotel room booking application built using Next.js and hosted on Azure. You can explore the application at [https://hotel-x.azurewebsites.net/](https://hotel-x.azurewebsites.net/).
 
-
 ## Project Structure
 
 The project is organized into several key directories and files:
@@ -29,10 +28,9 @@ The project is organized into several key directories and files:
 
 - **Bootstrap**: The application uses Bootstrap for styling and responsive design.
 
-- **Design Inspiration**: 
+- **Design Inspiration**:
   - The homepage design is inspired by [cityboxhotels.com](https://www.cityboxhotels.com).
   - The admin and user management CRUD functionality design follows a traditional ASP.NET MVC view design.
-
 
 ## Seeded Users
 
@@ -63,7 +61,6 @@ When registering a new user through the application, the user will be created wi
 
 Our service supports the X-Road protocol, implemented via the `X-Road-Client` header. This header is added to all HTTP requests made through the `BaseService` class.
 
-
 ## Getting Started
 
 To get started with the project, follow these steps:
@@ -72,10 +69,9 @@ To get started with the project, follow these steps:
 2. **Run the Development Server**: Use `npm run dev` to start the development server. The application will be available at `http://localhost:3000`.
 3. **Build for Production**: Use `npm run build` to create an optimized production build.
 
-
 ## Docker (Optional)
 
-###  Dockerfile Build Information
+### Dockerfile Build Information
 
 The application is containerized using a multi-stage Dockerfile. It leverages Node.js 18 on Alpine Linux for a lightweight and efficient build. The Dockerfile includes stages for installing dependencies, building the application, and preparing a production-ready image with Next.js optimizations.
 

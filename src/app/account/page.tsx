@@ -6,7 +6,7 @@ import {IBooking} from '@/interfaces/domain/IBooking';
 import BookingService from '@/services/BookingService';
 import {useContext, useEffect, useState} from 'react';
 import {JWTContext} from '@/states/contexts/JWTContext';
-import {CancellationDaysLimit} from '@/utils/BookingConstants';
+import {CancellationDaysLimit} from '@/utils/BusinessConstants';
 import {formatDate} from '@/utils/formatDate';
 import {handleResponseErrors} from '@/utils/handleResponseErrors';
 import Link from 'next/link';
@@ -31,7 +31,9 @@ const MyBookingsPage = () => {
     const startDateTime = new Date(booking.startDate);
     const currentDateTime = new Date();
     const threeDaysLimitDateTime = new Date(currentDateTime);
-    threeDaysLimitDateTime.setDate(currentDateTime.getDate() + CancellationDaysLimit);
+    threeDaysLimitDateTime.setDate(
+      currentDateTime.getDate() + CancellationDaysLimit
+    );
 
     return startDateTime >= threeDaysLimitDateTime;
   };
@@ -64,9 +66,7 @@ const MyBookingsPage = () => {
       <h2>My bookings</h2>
       {error && <div className='alert alert-danger'>{error}</div>}
       {loading && <p>Loading...</p>}
-      {bookings.length === 0 && !loading && (
-        <p>No bookings found</p>
-      )}
+      {bookings.length === 0 && !loading && <p>No bookings found</p>}
       {bookings.length > 0 && (
         <div className='pt-4'>
           <table className='table'>
@@ -77,6 +77,7 @@ const MyBookingsPage = () => {
                 <th>Last Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Guest Count</th>
                 <th>Is Cancelled</th>
                 <th>Actions</th>
               </tr>
@@ -90,6 +91,7 @@ const MyBookingsPage = () => {
                     <td>{booking.questLastName}</td>
                     <td>{formatDate(booking.startDate, 'dd-MM-yyyy HH:mm')}</td>
                     <td>{formatDate(booking.endDate, 'dd-MM-yyyy HH:mm')}</td>
+                    <td>{booking.guestCount}</td>
                     <td>
                       <input
                         className='check-box'

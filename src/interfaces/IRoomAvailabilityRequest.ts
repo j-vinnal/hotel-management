@@ -1,4 +1,4 @@
-import {MaxGuestCount, MinGuestCount} from '@/utils/BookingConstants';
+import {MaxGuestCount, MinGuestCount} from '@/utils/BusinessConstants';
 import {z, ZodType} from 'zod';
 
 export interface IRoomAvailabilityRequest {

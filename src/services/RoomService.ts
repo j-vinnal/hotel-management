@@ -2,7 +2,7 @@ import {IResultObject} from '@/interfaces/auth/IResultObject';
 import {IRoom} from '@/interfaces/domain/IRoom';
 import {IJWTResponse} from '@/interfaces/IJWTResponse';
 import {BaseEntityService} from './base/BaseEntityService';
-import { IRoomAvailabilityRequest } from '@/interfaces/IRoomAvailabilityRequest';
+import {IRoomAvailabilityRequest} from '@/interfaces/IRoomAvailabilityRequest';
 
 /**
  * RoomService provides methods to interact with custom room-related endpoints.

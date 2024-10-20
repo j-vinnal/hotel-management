@@ -52,7 +52,11 @@ export default class BookingService extends BaseEntityService<IBooking> {
       });
       return {data: response.data};
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 401 && retry) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.status === 401 &&
+        retry
+      ) {
         const retryResult = await this.handle401Error(error, jwtData);
         if (retryResult === null) {
           // Retry the request once with the new JWT

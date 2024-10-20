@@ -38,7 +38,7 @@ export default function SearchProvider({
   useEffect(() => {
     if (startDate && endDate && startDate >= endDate) {
       const newEndDate = new Date(startDate);
-      newEndDate.setDate(newEndDate.getDate() + 1); 
+      newEndDate.setDate(newEndDate.getDate() + 1);
       newEndDate.setHours(12, 0, 0, 0); // Set time to 12:00
       setEndDate(newEndDate);
     }

@@ -1,5 +1,6 @@
 import {z, ZodType} from 'zod';
 import {IBaseEntity} from './IBaseEntity';
+import {MaxGuestCount, MinGuestCount} from '@/utils/BusinessConstants';
 
 export interface IBooking extends IBaseEntity {
   roomId: string;
@@ -9,6 +10,7 @@ export interface IBooking extends IBaseEntity {
   questId: string;
   startDate: Date;
   endDate: Date;
+  guestCount: number;
   isCancelled: boolean;
 }
 
@@ -22,6 +24,14 @@ export const bookingSchema = z
     questId: z.string().uuid({message: 'Invalid quest'}),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
+    guestCount: z
+      .number()
+      .min(MinGuestCount, {
+        message: `Guest count must be at least ${MinGuestCount}`,
+      })
+      .max(MaxGuestCount, {
+        message: `Guest count must be at most ${MaxGuestCount}`,
+      }),
     isCancelled: z.boolean(),
   })
   .refine(data => data.endDate >= data.startDate, {

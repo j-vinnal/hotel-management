@@ -1,3 +1,4 @@
+import {MaxGuestCount, MinGuestCount} from '@/utils/BookingConstants';
 import {z, ZodType} from 'zod';
 
 export interface IRoomAvailabilityRequest {
@@ -11,7 +12,15 @@ export const RoomAvailabilityRequestSchema = z
   .object({
     startDate: z.coerce.date().optional(),
     endDate: z.coerce.date().optional(),
-    guestCount: z.number().optional(),
+    guestCount: z
+      .number()
+      .min(MinGuestCount, {
+        message: `Guest count must be at least ${MinGuestCount}`,
+      })
+      .max(MaxGuestCount, {
+        message: `Guest count must be at most ${MaxGuestCount}`,
+      })
+      .optional(),
     currentBookingId: z.string().uuid().optional(),
   })
   .superRefine((data, ctx) => {
@@ -31,11 +40,11 @@ export const RoomAvailabilityRequestSchema = z
       });
     }
 
-    if (data.startDate && data.endDate && data.endDate < data.startDate) {
+    if (data.startDate && data.endDate && data.endDate <= data.startDate) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['endDate'],
-        message: 'End date cannot be earlier than start date',
+        message: 'End date cannot be earlier or equal to start date',
       });
     }
   }) satisfies ZodType<IRoomAvailabilityRequest>;

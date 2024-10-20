@@ -36,8 +36,11 @@ export default function SearchProvider({
    * This is to ensure that the start date is always before the end date.
    */
   useEffect(() => {
-    if (startDate && endDate && startDate > endDate) {
-      setEndDate(startDate);
+    if (startDate && endDate && startDate >= endDate) {
+      const newEndDate = new Date(startDate);
+      newEndDate.setDate(newEndDate.getDate() + 1); 
+      newEndDate.setHours(12, 0, 0, 0); // Set time to 12:00
+      setEndDate(newEndDate);
     }
   }, [startDate, endDate]);
 

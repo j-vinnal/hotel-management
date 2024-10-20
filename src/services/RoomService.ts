@@ -1,9 +1,8 @@
 import {IResultObject} from '@/interfaces/auth/IResultObject';
 import {IRoom} from '@/interfaces/domain/IRoom';
 import {IJWTResponse} from '@/interfaces/IJWTResponse';
-import {IRoomAvailabilityRequest} from '@/interfaces/IRoomAvailabilityRequest';
-import {convertToUTC} from '@/utils/convertToUTC';
 import {BaseEntityService} from './base/BaseEntityService';
+import { IRoomAvailabilityRequest } from '@/interfaces/IRoomAvailabilityRequest';
 
 /**
  * RoomService provides methods to interact with custom room-related endpoints.
@@ -35,15 +34,9 @@ export default class RoomService extends BaseEntityService<IRoom> {
   async getAvailableRooms(
     request: IRoomAvailabilityRequest
   ): Promise<IResultObject<IRoom[]>> {
-    const utcRequest = {
-      ...request,
-      startDate: convertToUTC(request.startDate),
-      endDate: convertToUTC(request.endDate),
-    };
-
     try {
       const response = await this.axios.get<IRoom[]>('', {
-        params: utcRequest,
+        params: request,
       });
       return {data: response.data};
     } catch (e: any) {

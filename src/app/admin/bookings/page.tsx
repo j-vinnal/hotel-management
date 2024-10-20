@@ -3,11 +3,11 @@
 import withAdminAuth from '@/components/hoc/withAdminAuth';
 import AdminLayout from '@/components/layouts/AdminLayouts';
 import useEntityActions from '@/hooks/base/useEntityActions';
-import {IBooking} from '@/interfaces/domain/IBooking';
+import { IBooking } from '@/interfaces/domain/IBooking';
 import BookingService from '@/services/BookingService';
-import {formatDate} from '@/utils/formatDate';
+import { formatDate } from '@/utils/formatDate';
 import Link from 'next/link';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 
 const AdminBookingsPage = () => {
   const {
@@ -21,10 +21,10 @@ const AdminBookingsPage = () => {
    * Fetches all bookings and updates the state.
    */
   useEffect(() => {
-    fetchEntity();
+    fetchEntity()
   }, []);
 
-  useEffect(() => {}, [bookings]);
+  //useEffect(() => {}, [bookings]);
 
   return (
     <AdminLayout>
@@ -54,12 +54,13 @@ const AdminBookingsPage = () => {
             </thead>
             <tbody>
               {bookings.map(booking => (
+
                 <tr key={booking.id}>
                   <td>{booking.roomNumber}</td>
                   <td>{booking.questFirstName}</td>
                   <td>{booking.questLastName}</td>
-                  <td>{formatDate(booking.startDate)}</td>
-                  <td>{formatDate(booking.endDate)}</td>
+                  <td>{formatDate(booking.startDate, 'dd-MM-yyyy HH:mm')}</td>
+                  <td>{formatDate(booking.endDate, 'dd-MM-yyyy HH:mm')}</td>
                   <td>
                     <input
                       className='check-box'

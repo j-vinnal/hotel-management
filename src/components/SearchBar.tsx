@@ -7,11 +7,13 @@ import {
 } from '@/interfaces/IRoomAvailabilityRequest';
 import {RoomContext} from '@/states/contexts/RoomContext';
 import {SearchContext} from '@/states/contexts/SearchContext';
+import { CheckInTime, CheckOutTime } from '@/utils/BookingConstants';
+import { setDateWithFixedTime } from '@/utils/setDateWithFixedTime';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {usePathname, useRouter} from 'next/navigation';
 import {useContext, useEffect} from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import {toast} from 'react-toastify';
 
 /**
@@ -34,17 +36,19 @@ const SearchBar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+
+ 
   const {
     register,
     handleSubmit,
     formState: {errors, isSubmitting},
     setError,
-    reset,
+    reset
   } = useForm<IRoomAvailabilityRequest>({
     defaultValues: {
       guestCount: guestCount,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDate ? setDateWithFixedTime(startDate, CheckInTime, 0) : undefined,
+      endDate: endDate ? setDateWithFixedTime(endDate, CheckOutTime, 0) : undefined,
     },
     resolver: zodResolver(RoomAvailabilityRequestSchema),
   });
@@ -55,8 +59,8 @@ const SearchBar = () => {
   useEffect(() => {
     reset({
       guestCount: guestCount,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDate ? setDateWithFixedTime(startDate, CheckInTime, 0) : undefined,
+      endDate: endDate ? setDateWithFixedTime(endDate, CheckOutTime, 0) : undefined,
     });
   }, [guestCount, startDate, endDate, reset]);
 
@@ -68,6 +72,7 @@ const SearchBar = () => {
    */
   const handleSubmitSearch = async (data: IRoomAvailabilityRequest) => {
     try {
+
       await fetchRooms(data);
 
       if (pathname !== '/') {
@@ -102,6 +107,7 @@ const SearchBar = () => {
     height: '40px',
   };
 
+
   return (
     <>
       {errors.root && <div className='text-danger'>{errors.root.message}</div>}
@@ -133,8 +139,13 @@ const SearchBar = () => {
           register={register('startDate')}
           minDate={new Date()}
           error={errors.startDate}
-          selectedDate={startDate ? new Date(startDate) : undefined}
-          onDateChange={date => setStartDate(date!)}
+          selectedDate={startDate}
+          onDateChange={date => {
+            if (date) {
+              const dateWithTime = setDateWithFixedTime(date, CheckInTime, 0); // Set check-in time to 14:00
+              setStartDate(dateWithTime);
+            }
+          }}
           styleType='form-group'
           showLabel={false}
           marginBottomClass='mb-0'
@@ -145,10 +156,15 @@ const SearchBar = () => {
           label='Check-out date'
           type='date'
           register={register('endDate')}
-          minDate={startDate ? startDate : new Date()}
+          minDate={startDate ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000) : new Date()}
           error={errors.endDate}
-          selectedDate={endDate ? new Date(endDate) : undefined}
-          onDateChange={date => setEndDate(date!)}
+          selectedDate={endDate}
+          onDateChange={date => {
+            if (date) {
+              const dateWithTime = setDateWithFixedTime(date, CheckOutTime, 0); // Set check-out time to 12:00
+              setEndDate(dateWithTime);
+            }
+          }}
           styleType='form-group'
           showLabel={false}
           marginBottomClass='mb-0'

@@ -63,7 +63,7 @@ export default function Header() {
               className={`navbar-nav flex-grow-1 search-container ${isSearchVisible ? 'visible' : 'hidden'}`}>
               <div
                 className='d-flex justify-content-center mx-auto '
-                style={{zIndex: 20000, height: '70px', width: 'fit-content'}}>
+                style={{zIndex: 20000, height: '70px',  width: 'fit-conten'}}>
                 <SearchBar />
               </div>
             </ul>

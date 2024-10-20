@@ -23,29 +23,30 @@ const useFetchRooms = () => {
 
   const fetchRooms = useCallback(
     async (availabilityRequest?: IRoomAvailabilityRequest) => {
-      if (availabilityRequest?.endDate && availabilityRequest?.startDate) {
-        const start = new Date(availabilityRequest.startDate);
-        const end = new Date(availabilityRequest.endDate);
-        if (end < start) {
-          console.log('End date cannot be earlier than start date');
-          return;
+
+      const { startDate, endDate } = availabilityRequest || {};
+
+      // Check if both dates are provided or both are empty
+      if ((startDate && endDate) || (!startDate && !endDate)) {
+        if (startDate && endDate && endDate <= startDate) {
+          throw new Error('End date cannot be earlier or equal to start date');
         }
-      }
 
-      setLoading(true);
-      setError(null);
-      const service = new RoomService(null);
-      try {
-        const response = await service.getAvailableRooms(
-          availabilityRequest || {}
-        );
+        setLoading(true);
+        setError(null);
+        const service = new RoomService(null);
+        try {
+          const response = await service.getAvailableRooms(
+            availabilityRequest || {}
+          );
 
-        handleResponseErrors(response);
-        setRooms(response.data || []);
-      } catch (error) {
-        setError((error as Error).message);
-      } finally {
-        setLoading(false);
+          handleResponseErrors(response);
+          setRooms(response.data || []);
+        } catch (error) {
+          setError((error as Error).message);
+        } finally {
+          setLoading(false);
+        }
       }
     },
     []

@@ -1,4 +1,3 @@
-import {convertToUTC} from '@/utils/convertToUTC';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {FieldError, UseFormRegisterReturn} from 'react-hook-form';
@@ -85,11 +84,12 @@ const FormInput = ({
       <div className='datepicker-w-100'>
         <DatePicker
           selected={selectedDate}
+          dateFormat='dd-MM-yyyy HH:mm'
           onChange={onDateChange}
-          dateFormat='dd-MM-yyyy'
           className='form-control'
           placeholderText={placeholder || label}
-          minDate={minDate ? convertToUTC(minDate) : undefined}
+          minDate={minDate ?? undefined}
+          showTimeSelect={false}
         />
       </div>
     ) : (

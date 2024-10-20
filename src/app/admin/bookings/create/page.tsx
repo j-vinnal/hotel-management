@@ -10,6 +10,8 @@ import {IRoomAvailabilityRequest} from '@/interfaces/IRoomAvailabilityRequest';
 import BookingService from '@/services/BookingService';
 import ClientService from '@/services/ClientService';
 import {RoomContext} from '@/states/contexts/RoomContext';
+import {CheckInTime, CheckOutTime} from '@/utils/BookingConstants';
+import {setDateWithFixedTime} from '@/utils/setDateWithFixedTime';
 import {zodResolver} from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
@@ -45,13 +47,22 @@ const CreateBookingPage = () => {
   });
 
   useEffect(() => {
-    const availabilityRequest: IRoomAvailabilityRequest = {
-      startDate,
-      endDate,
+    const fetchAvailability = async () => {
+      try {
+        const availabilityRequest: IRoomAvailabilityRequest = {
+          startDate,
+          endDate,
+        };
+
+        await fetchRooms(availabilityRequest);
+      } catch (error) {
+        toast.error((error as Error).message);
+        setError('root', {type: 'server', message: (error as Error).message});
+      }
     };
 
-    fetchRooms(availabilityRequest);
-  }, [startDate, endDate, fetchRooms]);
+    fetchAvailability();
+  }, [startDate, endDate, fetchRooms, setError]);
 
   useEffect(() => {
     fetchClients();
@@ -71,6 +82,22 @@ const CreateBookingPage = () => {
     } catch (error) {
       toast.error((error as Error).message);
       setError('root', {type: 'server', message: (error as Error).message});
+    }
+  };
+
+  const onDateChange = (date: Date | null, isStartDate: boolean) => {
+    if (date) {
+      const dateWithTime = isStartDate
+        ? setDateWithFixedTime(date, CheckInTime, 0)
+        : setDateWithFixedTime(date, CheckOutTime, 0);
+
+      if (isStartDate) {
+        setValue('startDate', dateWithTime);
+        setStartDate(dateWithTime);
+      } else {
+        setValue('endDate', dateWithTime);
+        setEndDate(dateWithTime);
+      }
     }
   };
 
@@ -128,10 +155,7 @@ const CreateBookingPage = () => {
               register={register('startDate')}
               selectedDate={startDate}
               error={errors.startDate}
-              onDateChange={date => {
-                setValue('startDate', date!);
-                setStartDate(date!);
-              }}
+              onDateChange={date => onDateChange(date, true)}
               styleType='form-group'
             />
 
@@ -140,13 +164,14 @@ const CreateBookingPage = () => {
               label='Check-out date'
               type='date'
               register={register('endDate')}
-              minDate={startDate}
+              minDate={
+                startDate
+                  ? new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
+                  : new Date()
+              }
               selectedDate={endDate}
               error={errors.endDate}
-              onDateChange={date => {
-                setValue('endDate', date!);
-                setEndDate(date!);
-              }}
+              onDateChange={date => onDateChange(date, false)}
               styleType='form-group'
             />
 

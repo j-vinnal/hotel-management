@@ -19,6 +19,7 @@
     "noImplicitThis": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "module": "esnext",
     "target": "es2017",

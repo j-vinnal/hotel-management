@@ -17,6 +17,8 @@ import {useContext, useEffect, useState} from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import {useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
+import { CheckInTime, CheckOutTime } from '@/utils/BookingConstants';
+import { setDateWithFixedTime } from '@/utils/setDateWithFixedTime';
 
 /**
  * Represents the Edit Booking Page component.
@@ -96,17 +98,26 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
    * When these dates change, it fetches the updated list of available rooms
    * to reflect the new availability based on the updated booking dates.
    */
-  useEffect(() => {
-    if (booking) {
-      const availabilityRequest: IRoomAvailabilityRequest = {
-        startDate: booking.startDate,
-        endDate: booking.endDate,
-        currentBookingId: booking.id,
-      };
 
-      fetchRooms(availabilityRequest);
-    }
-  }, [booking, fetchRooms]);
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      if (booking) {
+        try {
+          const availabilityRequest: IRoomAvailabilityRequest = {
+            startDate: new Date(booking.startDate),
+            endDate: new Date(booking.endDate),
+            currentBookingId: booking.id,
+          };
+
+          await fetchRooms(availabilityRequest);
+        } catch (error) {
+          toast.error((error as Error).message);
+          setError('root', {type: 'server', message: (error as Error).message});
+        }
+      }
+    };
+    fetchAvailability();
+  }, [booking, fetchRooms, setError]);
 
   /**
    * Handles the form submission to edit the booking.
@@ -124,18 +135,23 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
     }
   };
 
+  const minEndDate = booking?.startDate
+    ? new Date(new Date(booking.startDate).getTime() + 24 * 60 * 60 * 1000)
+    : new Date();
+
   return (
     <AdminLayout>
       <h1>Edit</h1>
       <h4>Booking</h4>
       <hr />
       {loading && <p>Loading booking...</p>}
-      {error && <p className='text-danger'>Error: {error}</p>}
+      {errors.root ? (
+        <span className='text-danger'>{errors.root.message}</span>
+      ) : (
+        error && <p className='text-danger'>Error: {error}</p>
+      )}
       {booking && (
         <div className='row'>
-          {errors.root && (
-            <span className='text-danger'>{errors.root.message}</span>
-          )}
           <div className='col-md-4'>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormInput
@@ -176,11 +192,14 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
                 error={errors.startDate}
                 selectedDate={new Date(booking.startDate)}
                 onDateChange={date => {
-                  setValue('startDate', date!);
-                  setBooking(prev => ({
-                    ...prev!,
-                    startDate: date!,
-                  }));
+                  if (date) {
+                    const dateWithTime = setDateWithFixedTime(date, CheckInTime, 0);
+                    setValue('startDate', dateWithTime);
+                    setBooking(prev => ({
+                      ...prev!,
+                      startDate: dateWithTime,
+                    }));
+                  }
                 }}
                 styleType='form-group'
               />
@@ -190,15 +209,18 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
                 label='Check-out date'
                 type='date'
                 register={register('endDate')}
-                minDate={booking.startDate}
+                minDate={minEndDate}
                 error={errors.endDate}
                 selectedDate={new Date(booking.endDate)}
                 onDateChange={date => {
-                  setValue('endDate', date!);
-                  setBooking(prev => ({
-                    ...prev!,
-                    endDate: date!,
-                  }));
+                  if (date) {
+                    const dateWithTime = setDateWithFixedTime(date, CheckOutTime, 0);
+                    setValue('endDate', dateWithTime);
+                    setBooking(prev => ({
+                      ...prev!,
+                      endDate: dateWithTime,
+                    }));
+                  }
                 }}
                 styleType='form-group'
               />

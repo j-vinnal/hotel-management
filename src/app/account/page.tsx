@@ -19,7 +19,7 @@ const MyBookingsPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * Determines if a booking can be cancelled based on its start date.
+   * Determines if a booking can be cancelled based on its start date and time.
    *
    * A booking can be cancelled if its start date is at least
    * `CancellationDaysLimit` days from the current date.
@@ -28,13 +28,12 @@ const MyBookingsPage = () => {
    * @returns Returns true if the booking can be cancelled, false otherwise.
    */
   const bookingCanBeCancelled = (booking: IBooking): boolean => {
-    const startDate = new Date(booking.startDate);
-    const currentDate = new Date();
-    currentDate.setUTCHours(0, 0, 0, 0); // Set current date to midnight UTC
-    const threeDaysLimitDate = new Date(currentDate);
-    threeDaysLimitDate.setDate(currentDate.getDate() + CancellationDaysLimit);
+    const startDateTime = new Date(booking.startDate);
+    const currentDateTime = new Date();
+    const threeDaysLimitDateTime = new Date(currentDateTime);
+    threeDaysLimitDateTime.setDate(currentDateTime.getDate() + CancellationDaysLimit);
 
-    return startDate >= threeDaysLimitDate;
+    return startDateTime >= threeDaysLimitDateTime;
   };
 
   useEffect(() => {
@@ -89,8 +88,8 @@ const MyBookingsPage = () => {
                     <td>{booking.roomNumber}</td>
                     <td>{booking.questFirstName}</td>
                     <td>{booking.questLastName}</td>
-                    <td>{formatDate(booking.startDate)}</td>
-                    <td>{formatDate(booking.endDate)}</td>
+                    <td>{formatDate(booking.startDate, 'dd-MM-yyyy HH:mm')}</td>
+                    <td>{formatDate(booking.endDate, 'dd-MM-yyyy HH:mm')}</td>
                     <td>
                       <input
                         className='check-box'

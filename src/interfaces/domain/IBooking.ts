@@ -25,6 +25,6 @@ export const bookingSchema = z
     isCancelled: z.boolean(),
   })
   .refine(data => data.endDate >= data.startDate, {
-    message: 'End date cannot be earlier than start date',
+    message: 'End date cannot be earlier or equal to start date',
     path: ['endDate'],
   }) satisfies ZodType<IBooking>;

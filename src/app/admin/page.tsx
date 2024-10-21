@@ -21,7 +21,7 @@ const AdminHotelPage = () => {
    */
   useEffect(() => {
     fetchEntity();
-  }, []);
+  }, [fetchEntity]);
 
   return (
     <AdminLayout>

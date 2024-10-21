@@ -89,7 +89,7 @@ const EditBookingPage = (params: {params: {id?: string}}) => {
       };
       fetchRooms(availabilityRequest);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   /**

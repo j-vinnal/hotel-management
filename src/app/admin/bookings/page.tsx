@@ -22,9 +22,7 @@ const AdminBookingsPage = () => {
    */
   useEffect(() => {
     fetchEntity();
-  }, []);
-
-  //useEffect(() => {}, [bookings]);
+  }, [fetchEntity]);
 
   return (
     <AdminLayout>
